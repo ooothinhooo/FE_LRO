@@ -26,6 +26,7 @@ import {
 
 function App() {
   const { user } = useContext(ProductContext);
+  console.log(process.env.REACT_APP_API_KEY);
 
   return (
     <>

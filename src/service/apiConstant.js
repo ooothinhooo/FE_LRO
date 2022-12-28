@@ -1,5 +1,6 @@
-const API_URL = process.env.API_URL;
-
+// const API_URL = "https://api-lro.onrender.com";
+const API_URL = process.env.REACT_APP_API_KEY;
+console.log(API_URL);
 export const LOGIN = `${API_URL}/api/login`;
 export const REGISTER = `${API_URL}/api/register`;
 
