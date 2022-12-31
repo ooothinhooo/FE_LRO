@@ -11,15 +11,28 @@ import { get_posts } from "../../service/BaiViet/GetPost.js";
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
 import { delete_post } from "../../service/BaiViet/DeletePost.js";
+import {
+  get_doc_list,
+  get_post_list,
+} from "../../service/BaiViet/GetPostList.js";
 function ManaBV() {
   const { user } = useContext(ProductContext);
   const auth = user.token;
+  const userId = user.userId;
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState("");
+  const [infoCreators, setInfoCreators] = useState("");
+  const [result, setResult] = useState([]);
+
   const [dataPost, setDataPost] = useState([]);
 
   const getAllPost = async () => {
     try {
-      const { data } = await get_posts(auth);
-      setDataPost(data.data.posts);
+      const { data } = await get_post_list(auth, page);
+      setDataPost(data);
+      setCount(data.data.count);
+      setInfoCreators(data.data.infoCreators);
+      setResult(data.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -27,6 +40,21 @@ function ManaBV() {
   useEffect(() => {
     getAllPost();
   }, []);
+
+  const nextPage = () => {
+    const pg = page < Math.ceil(result.length / 10) ? page + 1 : 1;
+    setPage(pg);
+    // getPagination();
+  };
+  const prevPage = () => {
+    const pg = page === 1 ? 1 : page - 1;
+    setPage(pg);
+    // getPagination();
+  };
+
+  useEffect(() => {
+    getAllPost();
+  }, [page]);
 
   function handleDelete(id) {
     Swal.fire({
@@ -58,13 +86,12 @@ function ManaBV() {
     }
   };
 
-  console.log(dataPost);
   return (
     <div>
       <ToastContainer />
 
       <h2 className="md:text-3xl text-xl text-red-500 my-2 mb-10">
-        Các Bài Viết Bạn Đã Thêm
+        Tổng số <span>Bài Viết</span> Bạn Đã Thêm : {count}
       </h2>
       {/* <div className="my-14 h-10 w-full ">
                     <div className="flex justify-start items-center">
@@ -93,7 +120,7 @@ function ManaBV() {
                     </div>
                 </div> */}
       <div className="mt-10 w-full ">
-        {dataPost?.map((item) => {
+        {result?.map((item) => {
           return (
             <>
               <div className="w-full  inline-block relative py-1  justify-center items-center">
@@ -193,6 +220,53 @@ function ManaBV() {
             </>
           );
         })}
+        <div className="my-3 w-full   flex justify-center items-center ">
+          {/* <!-- Previous Button --> */}
+          <div className="w-[95%] flex justify-between items-center">
+            <a
+              onClick={(e) => prevPage()}
+              class="cursor-pointer inline-flex justify-start items-center 
+              px-4 py-2 mr-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-green-300 hover:text-green-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 mr-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Previous
+            </a>
+            <a
+              onClick={(e) => {
+                nextPage();
+              }}
+              class="cursor-pointer inline-flex justify-end items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg
+               hover:bg-green-300 hover:text-green-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              Next
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 ml-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

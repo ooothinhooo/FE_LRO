@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { CardTL, Header } from "../../components/index.js";
+import { CardRight, CardTL, Header } from "../../components/index.js";
 import { GET_ALL_DOC } from "../../service/apiConstant.js";
 import { like_doc } from "../../service/TaiLieu/LikeDoc.js";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
@@ -11,17 +11,36 @@ import { view_doc } from "../../service/TaiLieu/ViewDoc.js";
 import Like from "../../components/TaiLieu/Like.jsx";
 import logo from "../../images/LRO_logo.png";
 import dataCourse from "../../data/course.js";
+import { post_hight } from "../../service/BaiViet/GetPostHight.js";
 function TaiLieuPage() {
   const { user } = useContext(ProductContext);
   const token = user?.token;
   const photoURL = user?.photoURL;
   const [docs, setdocs] = useState([]);
   const [data, setData] = useState([]);
-  const [ArrayDocs, setArrayDocs] = useState([]);
+
   const [searchKey, setSearchKey] = useState();
   const arr = dataCourse.filter((item) => {
     return item?.key?.toLocaleLowerCase() === searchKey?.toLocaleLowerCase();
   });
+
+  const GetCardRight = async () => {
+    try {
+      const size = 12;
+      const result = await post_hight(size);
+      if (result.status === 200) {
+        setData(result.data.data);
+      } else {
+        setData();
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    GetCardRight();
+  }, []);
+
+  console.log(data);
   return (
     <>
       <div>
@@ -75,7 +94,14 @@ function TaiLieuPage() {
             <CardTL searchKey={searchKey} />
           </>
         </div>
-        <div class="bg-gray-300">05</div>
+        <div class="md:block hidden">
+          <div>
+            <div className="p-2">
+              <p className="text-2xl text-blue-400">BÀI VIẾT NỔI BẬT</p>
+            </div>
+            <CardRight data={data} type="baiviet" />
+          </div>
+        </div>
       </div>
     </>
   );

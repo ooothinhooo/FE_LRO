@@ -23,14 +23,24 @@ function classNames(...classes) {
 
 function Header() {
   const [isOpen, setIsOpen] = useState(1);
-  // console.log(isOpen);
   const LinkTo = useNavigate();
-
-  // const [{ user }, dispatch] = useStateValue();
   const { user } = useContext(ProductContext);
 
-  // console.table(user);
-
+  const href = window.location.href;
+  useEffect(() => {
+    if (href.includes("tailieu")) {
+      setIsOpen(2);
+    } else if (href.includes("baiviet")) {
+      setIsOpen(3);
+    } else if (href.includes("blogs")) {
+      setIsOpen(4);
+    } else if (href.includes("thaoluan")) {
+      setIsOpen(5);
+    } else {
+      setIsOpen(1);
+    }
+    // console.log(href);
+  }, [href]); 
   const handlerLogout = () => {
     localStorage.clear();
     window.location = "/";

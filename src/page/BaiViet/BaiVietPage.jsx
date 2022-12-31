@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import AddArticle from "../../components/Comments/AddArticle.jsx";
 import Articles from "../../components/Comments/Articles.jsx";
-import { CardBV, Header } from "../../components/index.js";
+import { CardBV, CardRight, Header } from "../../components/index.js";
 
 import { AiFillHeart, AiOutlineHeart, AiFillWechat } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa";
 import { IoChatbubblesSharp } from "react-icons/io";
 import dataCourse from "../../data/course.js";
+import { doc_hight } from "../../service/TaiLieu/GetDocHight.js";
 
 function BaiVietPage() {
   // console.log(dataPost);
@@ -14,6 +15,24 @@ function BaiVietPage() {
   const arr = dataCourse.filter((item) => {
     return item?.key?.toLocaleLowerCase() === searchKey?.toLocaleLowerCase();
   });
+
+  const [data, setData] = useState([]);
+
+  const GetCardRight = async () => {
+    try {
+      const size = 12;
+      const result = await doc_hight(size);
+      if (result.status === 200) {
+        setData(result.data.data);
+      } else {
+        setData();
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    GetCardRight();
+  }, []);
   return (
     <div>
       <div>
@@ -64,10 +83,18 @@ function BaiVietPage() {
                   </div>
                 </div>
               </div>
+
               <CardBV searchKey={searchKey} />
             </>
           </div>
-          <div class="bg-blue-900 hidden md:block">05</div>
+          <div class=" hidden md:block">
+            <div>
+              <div className="p-2">
+                <p className="text-2xl text-blue-400">TÀI LIỆU NỔI BẬT</p>
+              </div>
+              <CardRight data={data} type="tailieu" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

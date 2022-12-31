@@ -17,3 +17,9 @@ export { default as CardBV } from "./BaiViet/CardBV.jsx";
 export { default as ManagementTL } from "./ContentManagement/ManagementTL.jsx";
 export { default as ManagementBV } from "./ContentManagement/ManagementBV.jsx";
 export { default as ManagementBlogs } from "./ContentManagement/ManagentmentBlogs.jsx";
+
+
+//! components
+export {default as Skenleton} from './components/Skenleton.jsx'
+export {default as Animate_pulse} from './components/Animate_pulse.jsx'
+export {default as CardRight} from './components/CardRight.jsx'

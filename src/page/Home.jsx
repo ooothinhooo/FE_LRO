@@ -1,10 +1,15 @@
 import React from "react";
-import Header from "../components/Display/Header.jsx";
+import { Header, Skenleton } from "../components";
 
 function Home() {
   return (
     <div>
       <Header />
+      <div>
+        <>
+          <Skenleton />
+        </>
+      </div>
     </div>
   );
 }
