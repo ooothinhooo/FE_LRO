@@ -26,6 +26,13 @@ export const GET_DOC_HIGHT = `${API_URL}/get/dochight`;
 //! get post hight
 export const GET_POST_HIGHT = `${API_URL}/get/posthight`;
 
+//! get post hight
+export const GET_USER_HIGHT = `${API_URL}/get/userhight`;
+
+
+//! get one user 
+export const VIEW_USER = `${API_URL}/get/viewuser`;
+export const VIEW_DOC_USER = `${API_URL}/get/viewdoclist`;
 
 
 //? docs => /docs/path
@@ -40,6 +47,7 @@ export const GET_DOC_LIST = `${API_URL}/docs/doclist`;
 export const LIKE_DOC = `${API_URL}/docs/likedoc`;
 //* view doc
 export const VIEW_DOC = `${API_URL}/docs/viewdoc`;
+export const ISPRIVATE_DOC = `${API_URL}/docs/isPrivatedoc`;
 
 //? posts => /post/path
 export const ADD_POST = `${API_URL}/post/addpost`;
@@ -49,3 +57,4 @@ export const VIEW_POST = `${API_URL}/post/viewpost`;
 export const LIKE_POST = `${API_URL}/post/likepost`;
 export const GET_POST = `${API_URL}/post/getpost`;
 export const GET_POST_LIST = `${API_URL}/post/postlist`;
+export const ISPRIVATE_POST = `${API_URL}/post/isPrivatepost`;

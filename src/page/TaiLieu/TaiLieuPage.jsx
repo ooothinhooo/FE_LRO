@@ -1,23 +1,23 @@
 import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { CardRight, CardTL, Header } from "../../components/index.js";
-import { GET_ALL_DOC } from "../../service/apiConstant.js";
-import { like_doc } from "../../service/TaiLieu/LikeDoc.js";
+import {
+  CardAuthor,
+  CardRight,
+  CardTL,
+  Header,
+} from "../../components/index.js";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
-import { AiFillTag, AiOutlineLike, AiFillLike } from "react-icons/ai";
-
-import { view_doc } from "../../service/TaiLieu/ViewDoc.js";
-import Like from "../../components/TaiLieu/Like.jsx";
-import logo from "../../images/LRO_logo.png";
 import dataCourse from "../../data/course.js";
 import { post_hight } from "../../service/BaiViet/GetPostHight.js";
+import { GET_USER_HIGHT } from "../../service/apiConstant.js";
 function TaiLieuPage() {
   const { user } = useContext(ProductContext);
   const token = user?.token;
   const photoURL = user?.photoURL;
   const [docs, setdocs] = useState([]);
   const [data, setData] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
 
   const [searchKey, setSearchKey] = useState();
   const arr = dataCourse.filter((item) => {
@@ -36,8 +36,18 @@ function TaiLieuPage() {
     } catch (error) {}
   };
 
+  const GetUserHight = async () => {
+    try {
+      const result = await axios.get(GET_USER_HIGHT, { params: { S: "3" } });
+      // console.log(result.data.data);
+      setDataUser(result.data.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     GetCardRight();
+    GetUserHight();
   }, []);
 
   console.log(data);
@@ -47,8 +57,8 @@ function TaiLieuPage() {
         <Header />
       </div>
 
-      <div class="md:grid md:grid-cols-3 md:gap-4 md:mx-2 md:my-4 my-4">
-        <div class="col-span-2 ">
+      <div class="md:grid md:grid-cols-3 md:gap-4 md:mx-2 md:my-4 my-4 h-auto">
+        <div class="col-span-2 h-auto">
           <>
             <>
               <div className=" flex ml-4 w-[90%] md:w-[80%]">
@@ -94,12 +104,18 @@ function TaiLieuPage() {
             <CardTL searchKey={searchKey} />
           </>
         </div>
-        <div class="md:block hidden">
-          <div>
+        <div class="md:block hidden mr-2 overflow-y-auto h-auto">
+          <div className="overflow-y-auto h-auto">
             <div className="p-2">
               <p className="text-2xl text-blue-400">BÀI VIẾT NỔI BẬT</p>
             </div>
             <CardRight data={data} type="baiviet" />
+          </div>
+          <div className="overflow-y-auto h-auto">
+            <div className="p-2">
+              <p className="text-2xl text-blue-400">CÁC TÁC GIẢ NỔI BẬT</p>
+            </div>
+            <CardAuthor data={dataUser} />
           </div>
         </div>
       </div>

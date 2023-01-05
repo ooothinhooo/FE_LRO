@@ -1,13 +1,20 @@
 import React, { useEffect, useState, Suspense } from "react";
 import AddArticle from "../../components/Comments/AddArticle.jsx";
 import Articles from "../../components/Comments/Articles.jsx";
-import { CardBV, CardRight, Header } from "../../components/index.js";
+import {
+  CardAuthor,
+  CardBV,
+  CardRight,
+  Header,
+} from "../../components/index.js";
 
 import { AiFillHeart, AiOutlineHeart, AiFillWechat } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa";
 import { IoChatbubblesSharp } from "react-icons/io";
 import dataCourse from "../../data/course.js";
 import { doc_hight } from "../../service/TaiLieu/GetDocHight.js";
+import axios from "axios";
+import { GET_USER_HIGHT } from "../../service/apiConstant.js";
 
 function BaiVietPage() {
   // console.log(dataPost);
@@ -17,6 +24,7 @@ function BaiVietPage() {
   });
 
   const [data, setData] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
 
   const GetCardRight = async () => {
     try {
@@ -30,8 +38,18 @@ function BaiVietPage() {
     } catch (error) {}
   };
 
+  const GetUserHight = async () => {
+    try {
+      const result = await axios.get(GET_USER_HIGHT, { params: { S: "3" } });
+      // console.log(result.data.data);
+      setDataUser(result.data.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     GetCardRight();
+    GetUserHight();
   }, []);
   return (
     <div>
@@ -93,6 +111,12 @@ function BaiVietPage() {
                 <p className="text-2xl text-blue-400">TÀI LIỆU NỔI BẬT</p>
               </div>
               <CardRight data={data} type="tailieu" />
+            </div>
+            <div>
+              <div className="p-2">
+                <p className="text-2xl text-blue-400">CÁC TÁC GIẢ NỔI BẬT</p>
+              </div>
+              <CardAuthor data={dataUser} />
             </div>
           </div>
         </div>

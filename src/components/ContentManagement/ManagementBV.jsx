@@ -6,7 +6,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-import { GET_ALL_POST } from "../../service/apiConstant.js";
+import { GET_ALL_POST, ISPRIVATE_POST } from "../../service/apiConstant.js";
 import { get_posts } from "../../service/BaiViet/GetPost.js";
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
@@ -15,6 +15,7 @@ import {
   get_doc_list,
   get_post_list,
 } from "../../service/BaiViet/GetPostList.js";
+import { isprivate_post } from "../../service/BaiViet/IsPrivatePost.js";
 function ManaBV() {
   const { user } = useContext(ProductContext);
   const auth = user.token;
@@ -86,6 +87,17 @@ function ManaBV() {
     }
   };
 
+  const handleIsPrivate = async (id) => {
+    try {
+      const result = await isprivate_post(auth, id);
+      console.log(result);
+      if (result.data.status == 200) {
+        getAllPost();
+        // toast("Delete Successfully");
+      }
+    } catch (error) {}
+  };
+
   return (
     <div>
       <ToastContainer />
@@ -93,32 +105,6 @@ function ManaBV() {
       <h2 className="md:text-3xl text-xl text-red-500 my-2 mb-10">
         Tổng số <span>Bài Viết</span> Bạn Đã Thêm : {count}
       </h2>
-      {/* <div className="my-14 h-10 w-full ">
-                    <div className="flex justify-start items-center">
-                        <span class="flex mx-2 justify-start text-blue-500 items-center">
-                            <label for="date" class="  text-base font-medium text-blue-500 mx-2">
-                                Lọc theo môn
-                            </label>
-                            <select className=" rounded" onChange={(e) => setfilterTag(e.target.value)}>
-                                <option value="">ALL</option>
-                                {unique(DataHocPhandb).map((option) => (
-                                    <option value={option}>{option}</option>
-                                ))}
-                            </select>
-                        </span>
-                        <span class="flex mx-2 justify-end text-blue-500 items-center">
-                            <label for="date" class="  text-base font-medium text-blue-500 mx-2">
-                                Date
-                            </label>
-                            <input
-                                type="date"
-                                name="date"
-                                id="date"
-                                // class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                            />
-                        </span>
-                    </div>
-                </div> */}
       <div className="mt-10 w-full ">
         {result?.map((item) => {
           return (
@@ -135,7 +121,10 @@ function ManaBV() {
                 <div className="bg-[#f8f9fa] justify-end  w-full md:w-[92%] p-2 md:ml-10  z-[100] ">
                   <div className="flex justify-between  ">
                     <div className="flex justify-start items-center">
-                      <p className="text-2xl mx-2">
+                      <p
+                        onClick={() => handleIsPrivate(item._id)}
+                        className="text-2xl mx-2"
+                      >
                         {item.isPrivate ? (
                           <>
                             <FaLock className="text-red-400" />
@@ -161,11 +150,13 @@ function ManaBV() {
                           <AiFillLike /> {item.like.length}
                         </p>
                       </button>
-                      <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
-                        <p class="text-primary  shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
-                          EDIT
-                        </p>
-                      </button>
+                      <Link to={`/baiviet/update/${item._id}`}>
+                        <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
+                          <p class="text-primary  shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
+                            EDIT
+                          </p>
+                        </button>
+                      </Link>
                       <button
                         onClick={(e) => handleDelete(item._id)}
                         class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-red-300 hover:bg-pink-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2"
@@ -220,7 +211,11 @@ function ManaBV() {
             </>
           );
         })}
-        <div className="my-3 w-full   flex justify-center items-center ">
+        <div
+          className={`${
+            result.length < 10 ? "hidden" : "block"
+          } my-3 w-full   flex justify-center items-center `}
+        >
           {/* <!-- Previous Button --> */}
           <div className="w-[95%] flex justify-between items-center">
             <a

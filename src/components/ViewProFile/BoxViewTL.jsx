@@ -4,105 +4,29 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Swal from "sweetalert2";
-import { GET_ALL_DOC, GET_DOC } from "../../service/apiConstant.js";
-import { delete_doc } from "../../service/TaiLieu/DeleteDoc.js";
+
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
-import { get_doc } from "../../service/TaiLieu/GetDoc.js";
-import { get_doc_list } from "../../service/TaiLieu/GetDocList.js";
-import { isprivate_doc } from "../../service/TaiLieu/IsPrivateDoc.js";
-function ManagementTL() {
+import { view_doc_user } from "../../service/api.getUser.js";
+import axios from "axios";
+import { VIEW_DOC_USER } from "../../service/apiConstant.js";
+function BoxViewTL({ data }) {
   const { user } = useContext(ProductContext);
-  const auth = user.token;
-  const uid = user.userId;
   const [docs, setdocs] = useState([]);
 
   const [page, setPage] = useState(1);
   const [count, setCount] = useState("");
   const [infoCreators, setInfoCreators] = useState("");
-  const [result, setResult] = useState([]);
-  const getAllDocs = async () => {
-    try {
-      const { data } = await get_doc_list(auth, page);
-      setdocs(data);
-      setCount(data.data.count);
-      setInfoCreators(data.data.infoCreators);
-      setResult(data.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  console.log(docs);
-  const nextPage = () => {
-    const pg = page < Math.ceil(result.length / 10) ? page + 1 : 1;
-    setPage(pg);
-    // getPagination();
-  };
-  const prevPage = () => {
-    const pg = page === 1 ? 1 : page - 1;
-    setPage(pg);
-    // getPagination();
-  };
-
-  useEffect(() => {
-    getAllDocs();
-  }, [page]);
-
-  function handleDelete(id) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        DeleteDocs(id);
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
-  }
-
-  const DeleteDocs = async (id) => {
-    try {
-      const result = await delete_doc(auth, id);
-      console.log(result);
-      if (result.data.status == 200) {
-        getAllDocs();
-        toast("Delete Successfully");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getAllDocs();
-  }, []);
-  const handleIsPrivate = async (id) => {
-    try {
-      const result = await isprivate_doc(auth, id);
-      console.log(result);
-      if (result.data.status == 200) {
-        // getAllPost();
-        getAllDocs();
-        // toast("Delete Successfully");
-      }
-    } catch (error) {}
-  };
-
+  //   const [result, setResult] = useState();
+  //   setResult(data?.data?.data?.docs);
+  //   console.log(data);
   return (
     <div>
       <ToastContainer />
 
-      <h2 className="md:text-3xl text-xl text-red-500 my-2 mb-10">
-        Tổng số <span>Tài Liệu</span> Đã Tải Lên: {count}
-      </h2>
+      <h2 className="md:text-3xl text-xl text-red-500 my-2 mb-10"></h2>
       <div className="mt-10 w-full ">
-        {result?.map((item) => {
+        {data?.map((item) => {
           return (
             <>
               <div className="w-full  inline-block relative py-1  justify-center items-center">
@@ -117,10 +41,7 @@ function ManagementTL() {
                 <div className="bg-[#f8f9fa] justify-end  w-full md:w-[92%] p-2 md:ml-10  z-[100] ">
                   <div className="flex justify-between  ">
                     <div className="flex justify-start items-center">
-                      <p
-                        onClick={() => handleIsPrivate(item._id)}
-                        className="text-2xl mx-2"
-                      >
+                      <p className="text-2xl mx-2">
                         {item.isPrivate ? (
                           <>
                             <FaLock className="text-red-400" />
@@ -146,14 +67,13 @@ function ManagementTL() {
                           <AiFillLike /> {item.like.length}
                         </p>
                       </button>
-                      <button
-                        onClick={(e) => handleDelete(item._id)}
-                        class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-red-300 hover:bg-pink-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2"
-                      >
-                        <p class="text-primary  shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
-                          DELETE
-                        </p>
-                      </button>
+                      <Link to={`/tailieu/view/${item?._id}`}>
+                        <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
+                          <p class="text-primary flex text-md justify-center  items-center shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
+                            Xem Chi Tiết
+                          </p>
+                        </button>
+                      </Link>
                     </div>
                   </div>
                   <div className="p-1">
@@ -202,12 +122,8 @@ function ManagementTL() {
             </>
           );
         })}
-        <div
-          className={`${
-            result.length < 10 ? "hidden" : "block"
-          } my-3 w-full   flex justify-center items-center `}
-        >
-          {/* <!-- Previous Button --> */}
+        {/* <div className="my-3 w-full   flex justify-center items-center ">
+          
           <div className="w-[95%] flex justify-between items-center">
             <a
               onClick={(e) => prevPage()}
@@ -252,10 +168,10 @@ function ManagementTL() {
               </svg>
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 }
 
-export default ManagementTL;
+export default BoxViewTL;

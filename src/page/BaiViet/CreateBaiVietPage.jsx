@@ -5,7 +5,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { toast } from "react-toastify";
 import data from "../../data/course.js";
 
-import { FormBV, Header } from "../../components";
+import { CreateFormBV, Header } from "../../components";
 
 function CreateBaiVietPage() {
   return (
@@ -14,7 +14,7 @@ function CreateBaiVietPage() {
         <Header />
       </div>
       <div>
-        <FormBV />
+        <CreateFormBV />
       </div>
     </div>
   );

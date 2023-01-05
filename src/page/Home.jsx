@@ -7,7 +7,7 @@ function Home() {
       <Header />
       <div>
         <>
-          <Skenleton />
+          <Skenleton num={3} />
         </>
       </div>
     </div>

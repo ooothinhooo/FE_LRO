@@ -23,6 +23,10 @@ import {
   UpdateBaiVietPage,
   ViewBaiVietPage,
   ContentManagement,
+  ProFile,
+  CreateBlog,
+  UpdateBlog,
+  ViewBlog,
 } from "./page/";
 
 function App() {
@@ -50,6 +54,7 @@ function App() {
             {user && user?.userId ? (
               <>
                 <Route path="/me/drafts/" element={<ContentManagement />} />
+                <Route path="/u/:id" element={<ProFile />} />
                 //* BaiVietPage
                 <Route
                   path="/baiviet"
@@ -74,6 +79,9 @@ function App() {
                 <Route path="/tailieu/view/:id" element={<ViewTaiLieuPage />} />
                 //*BlogsPage
                 <Route path="/blogs" element={<BlogsPage />} />
+                <Route path="/blogs/create" element={<CreateBlog />} />
+                <Route path="/blogs/update/:id" element={<UpdateBlog />} />
+                <Route path="/blogs/view/:id" element={<ViewBlog />} />
                 //* ThaoLuanPage
                 <Route path="/thaoluan" element={<ThaoLuanPage />} />
               </>
