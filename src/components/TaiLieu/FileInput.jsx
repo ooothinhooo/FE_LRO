@@ -6,6 +6,7 @@ import { storage } from "../../firebase.js";
 import check from "../../images/check.png";
 // import styles from "./fileinput.css";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
+import { DocForm } from "../index.js";
 
 const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
   const { user } = useContext(ProductContext);
@@ -14,7 +15,6 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
   const inputRef = useRef();
   const [progress, setProgress] = useState(0);
   const [progressShow, setProgressShow] = useState(false);
-
   const handleUpload = () => {
     setProgressShow(true);
     const fileName = new Date().getTime() + value.name;
@@ -47,12 +47,12 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
       <button
         type="button"
         onClick={() => inputRef.current.click()}
-        className={` text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+        className={`hidden text-white bg-gradient-to-br from-green-400 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
       >
         {label}
       </button>
       <div
-        className={`text-gray-200 border-sky-500  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+        className={` text-gray-200 border-sky-500  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
       >
         <input
           type="file"
@@ -60,7 +60,7 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
           onChange={(e) => handleInputState(name, e.currentTarget.files[0])}
           vlaue={value}
           // className={`bg-red-400`}
-          className={`text-white  border-sky-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+          className={`text-black hidden border-sky-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
           {...rest}
         />
       </div>
@@ -74,7 +74,7 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
       {value !== null && !progressShow && typeof value !== "string" && (
         <button
           onClick={handleUpload}
-          className={`text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+          className={`text-white w-full bg-gradient-to-br from-green-400 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
         >
           Upload
         </button>

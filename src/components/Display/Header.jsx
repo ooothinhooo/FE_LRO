@@ -13,8 +13,7 @@ const navigation = [
   { name: "Trang Chủ", href: "/", current: true },
   { name: "Tài Liệu", href: "/tailieu", current: false },
   { name: "Bài Viết", href: "/baiviet", current: false },
-  { name: "Blogs", href: "/blogs", current: false },
-  { name: "Thảo Luận", href: "/thaoluan", current: false },
+  { name: "Hỏi Đáp", href: "/thaoluan", current: false },
 ];
 
 function classNames(...classes) {
@@ -48,7 +47,7 @@ function Header() {
 
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="bg-white text-black ">
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -84,56 +83,46 @@ function Header() {
                         to="/"
                         className={`${
                           isOpen === 1
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            ? "bg-primary text-white"
+                            : "text-black hover:bg-primary hover:text-white"
                         }  px-3 py-2 rounded-md text-sm font-medium`}
                       >
                         Trang Chủ
                       </Link>
                       <Link
-                        onClick={() => setIsOpen(2)}
+                        onClick={() => setIsOpen(1)}
                         to="/tailieu"
                         className={`${
                           isOpen === 2
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            ? "bg-primary text-white"
+                            : "text-black hover:bg-primary hover:text-white"
                         }  px-3 py-2 rounded-md text-sm font-medium`}
                       >
                         Tài Liệu
                       </Link>
                       <Link
-                        onClick={() => setIsOpen(3)}
+                        onClick={() => setIsOpen(1)}
                         to="/baiviet"
                         className={`${
                           isOpen === 3
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            ? "bg-primary text-white"
+                            : "text-black hover:bg-primary hover:text-white"
                         }  px-3 py-2 rounded-md text-sm font-medium`}
                       >
                         Bài Viết
                       </Link>
                       <Link
-                        onClick={() => setIsOpen(4)}
-                        to="/blogs"
+                        onClick={() => setIsOpen(1)}
+                        to="/"
                         className={`${
                           isOpen === 4
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            ? "bg-primary text-white"
+                            : "text-black hover:bg-primary hover:text-white"
                         }  px-3 py-2 rounded-md text-sm font-medium`}
                       >
-                        Blogs
+                        Hỏi Đáp
                       </Link>
-                      <Link
-                        onClick={() => setIsOpen(5)}
-                        to="/thaoluan"
-                        className={`${
-                          isOpen === 5
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                        }  px-3 py-2 rounded-md text-sm font-medium`}
-                      >
-                        Thảo Luận
-                      </Link>
+
                       {/* {navigation.map((item) => (
                         <Link
                           key={item.name}
@@ -172,7 +161,7 @@ function Header() {
                   <input
                     type="text"
                     id="search-navbar"
-                    class="block w-full p-2 pl-10 text-sm text-gray-100 border border-gray-300 rounded-lg bg-primary focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block w-full p-2 pl-10 text-sm text-black border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search..."
                   />
                 </div>
@@ -319,20 +308,30 @@ function Header() {
                         <span className="sr-only flex">View notifications</span>
                         {/* <a className="h-6 w-6" aria-hidden="true" /> */}
                         <span className="h-6 w-auto flex">
-                          <span className="mx-1">Login Now</span>
+                          <span className="mx-1">Đăng Nhập</span>
+                        </span>
+                      </Link>
+                      <Link
+                        to="/register"
+                        type="button"
+                        className="p-1 mx-2 text-blue-500 hover:text-pink-500  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      >
+                        <span className="sr-only flex">View notifications</span>
+                        {/* <a className="h-6 w-6" aria-hidden="true" /> */}
+                        <span className="h-6 w-auto flex">
+                          <span className="mx-1">Đăng Ký</span>
                         </span>
                       </Link>
                     </>
                   )}
-
                   {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-3">
+                  <Menu as="div" className="relative ml-3 z-200">
                     <div>
                       <Menu.Button className="flex rounded-full shadow-lg shadow-blue-700/10 bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src={user?.photoURL ? user?.photoURL : AVT}
+                          src={user?.avatar ? user?.avatar : AVT}
                           alt=""
                         />
                       </Menu.Button>

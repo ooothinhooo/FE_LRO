@@ -6,46 +6,29 @@ import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
 import { add_doc } from "../../service/TaiLieu/AddDoc.js";
 import { FileInput } from "../../components";
 import dataCourse from "../../data/course.js";
-
+import { TagsInput } from "react-tag-input-component";
+import { FUNC_CREATE_DOC } from "../../service/FuncDoc/index.js";
+import Swal from "sweetalert2";
 function DocForm() {
   const { user } = useContext(ProductContext);
   const token = user?.token;
   const [isP, setisP] = useState(false);
   const [isHP, setisHP] = useState(false);
-  const [tagName, setTagName] = useState("");
-  // console.log(isHP);
+  const [tagName, setTagName] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const [upload, setUpload] = useState(Boolean(false));
+
   const [data, setData] = useState({
     title: "",
     tag: "",
-    dataURL: "",
-    nameTag: "",
-    desc: "",
-    userId: user?.userId,
-    creater: user?.username,
-    createrId: user?.userId,
-    createrPhoto: user?.photoURL,
+    category: "",
+    content: "",
+    docs_URL: "",
+    creatorsName: user.first_name + user.last_name,
+    creatorsId: user.userId,
+    creatorsPhoto: user.avatar,
     isPrivate: "",
   });
-  // console.table(data);
-
-  const courses = dataCourse.filter(function (item) {
-    return item?.key?.toUpperCase() === data?.tag?.toUpperCase();
-  });
-
-  // console.log(data.nameTag);
-
-  const set = () => {
-    if (courses.length >= 0) {
-      data.nameTag = courses[0]?.name;
-    } else {
-      data.nameTag = tagName;
-    }
-  };
-  useEffect(() => {
-    set();
-    // console.log("use");
-    data.nameTag = courses[0]?.name;
-  }, [data.tag, data.nameTag]);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -55,21 +38,21 @@ function DocForm() {
     setData((prev) => ({ ...prev, [name]: value }));
   };
   const handleSubmit = async (e) => {
-    data.isPrivate = isP;
-    if (isHP) {
-      data.tag = "CTU";
-      data.nameTag = "Tài Liệu Khác";
-    }
-
-    console.table(data);
     e.preventDefault();
-    const resultLogin = await add_doc(token, data);
+    const resultLogin = await FUNC_CREATE_DOC(token, data);
     console.log(resultLogin);
     if (resultLogin.status == 200) {
       if (resultLogin.data.status === 200) {
         toast(resultLogin.data.message);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Đăng Tải Tài Liệu Thành Công",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setTimeout(() => {
-          window.location.reload();
+          window.location = "/tailieu";
         }, 1000);
         return;
       }
@@ -83,258 +66,228 @@ function DocForm() {
       }
     }
   };
+  useEffect(() => {
+    data.isPrivate = isP;
+    data.tag = selected;
+    console.table(data);
 
+    if (data.docs_URL?.size == undefined) {
+      setUpload(true);
+    }
+  }, [data, isP, selected]);
   return (
     <div>
       <ToastContainer />
 
-      <div className="my-6 py-6  h-auto ">
-        <div role="alert" className="justify-center flex items-center mb-6">
-          <div class="border-t border-b border-red-500 text-red-700 px-4 py-3">
-            <p class="font-bold">Thông Báo</p>
-            <p class="text-sm">
-              MỌI NGƯỜI VUI LÒNG ĐĂNG TẢI CÁC TÀI LIỆU Ở ĐỊNH DẠNG PDF NHÉ
-            </p>{" "}
-            <p class="text-sm">
-              Các định dạng khác vẫn được những sẽ xem trước không được
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <div class="max-w-2xl mx-auto">
-            <div className="">
-              <div className="mb-4 justify-center">
-                <label class="inline-flex relative items-center mr-5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    // value={isP}
-                    onChange={(e) => setisP(!isP)}
-                    class="sr-only peer"
-                  />
-                  <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                  {!isP ? (
-                    <>
-                      <span class="ml-3 text-sm font-medium text-gray-100 dark:text-gray-300">
-                        Chế độ đăng công khai
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span class="ml-3 text-sm font-medium text-gray-100 dark:text-gray-300">
-                        Chế độ đăng riêng tư
-                      </span>
-                    </>
-                  )}
-                </label>
-                <label class="inline-flex relative items-center mr-5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    // value={isP}
-                    onChange={(e) => setisHP(!isHP)}
-                    class="sr-only peer"
-                  />
-                  <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                  {!isHP ? (
-                    <>
-                      <span class="ml-3 text-sm font-medium text-gray-100 dark:text-gray-300">
-                        Chế độ đăng Theo Môn Học
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span class="ml-3 text-sm font-medium text-gray-100 dark:text-gray-300">
-                        Chế độ đăng Không Theo Môn Học
-                      </span>
-                    </>
-                  )}
-                </label>
-              </div>
-
-              <div class="relative z-0 mb-6 w-full group">
-                <input
-                  type="text"
-                  class="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                  name="title"
-                  onChange={handleChange}
-                  value={data.title}
-                />
+      <div className={` w-full  h-[90vh]  bg-white`}>
+        <div className={`h-full ${upload ? "hidden" : "block"}`}>
+          <div class="flex w-full h-full  items-center justify-center bg-grey-lighter t">
+            <div class="max-w-2xl mx-auto">
+              <div class="flex items-center justify-center w-full">
                 <label
-                  for="floating_email"
-                  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  for="dropzone-file"
+                  class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
-                  Nhập Tiêu Đề
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      class="w-10 h-10 mb-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span class="font-semibold">Click to upload</span> or drag
+                      and drop
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    </p>
+                  </div>
+                  {/* <input id="dropzone-file" type="file" class="hidden" />
+                   */}
+                  <div className="">
+                    <FileInput
+                      className={`w-full `}
+                      name="docs_URL"
+                      label="Choose PDF"
+                      handleInputState={handleInputState}
+                      type="docs"
+                      value={data.docs_URL}
+                    />
+                  </div>
                 </label>
               </div>
 
-              {!isHP ? (
-                <>
-                  <div class="grid xl:grid-cols-2 xl:gap-6">
-                    <div class="relative z-0 mb-1 mt-2 w-full group">
-                      <input
-                        type="text"
-                        class="block uppercase py-3 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" "
-                        required
-                        name="tag"
-                        onChange={handleChange}
-                        value={data.tag}
-                      />
-                      <label
-                        for="floating_first_name"
-                        class="absolute text-sm text-gray-400 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                      >
-                        Mã Môn Học
-                      </label>
-                    </div>
-                    <div class="relative z-0 mb-1 mt-2 w-full group">
-                      <input
-                        type="text"
-                        name="nameTag"
-                        onChange={handleChange}
-                        onChange={(e) => setTagName(e.target.value)}
-                        value={data.nameTag}
-                        // value={tagName}
-                        class="block py-3 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        // class="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" "
-                        required
-                      />
-                      <label
-                        for="floating_last_name"
-                        class="absolute text-sm text-gray-400 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                      >
-                        Tên Môn Học
-                      </label>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
-              {/* <div class="grid xl:grid-cols-2 xl:gap-6">
-                <div class="relative z-0 mb-1 mt-2 w-full group">
-                  <div class="flex items-center pl-4 rounded border border-gray-200 dark:border-gray-700">
-                    <input
-                      id="bordered-checkbox-1"
-                      type="checkbox"
-                      onChange={(e) => setisP(false)}
-                      name="bordered-checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      for="bordered-checkbox-1"
-                      class="py-4 ml-2 w-full text-sm font-medium text-gray-100 dark:text-gray-300"
-                    >
-                      Đăng Công Khai
-                    </label>
-                  </div>
-                </div>
-                <div class="relative z-0 mb-1 mt-2 w-full group">
-                  <div class="flex items-center pl-4 rounded border border-gray-200 dark:border-gray-700">
-                    <input
-                      checked
-                      id="bordered-checkbox-2"
-                      type="checkbox"
-                      // value={isP}
-                      onChange={(e) => setisP(true)}
-                      name="bordered-checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      for="bordered-checkbox-2"
-                      class="py-4 ml-2 w-full text-sm font-medium text-gray-100 dark:text-gray-300"
-                    >
-                      Đăng Riêng Tư
-                    </label>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div class="grid xl:grid-cols-2 xl:gap-6">
-            <div class="relative z-0 mb-6 w-full group">
-              <div className="justify-center items-center">
-                <div class="max-w-2xl mx-auto">
-                  <label
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    for="file_input"
-                  >
-                    Upload file
-                  </label>
-                  <input
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="file_input"
-                    type="file"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="relative z-0 mb-6 w-full group">
-              <button
-                type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Submit
-              </button>
-            </div>
-          </div> */}
-              <div class="relative z-0 mb-6 w-full group">
-                <div
-                  class="mt-2 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2
-             border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              <p class="mt-5">
+                Các loại tệp được hỗ trợ : Powerpoint (ppt, pptx, ppsx, potx),
+                PDF, Word (doc, docx)
+                <a
+                  class="text-blue-600 hover:underlin block"
+                  href="#"
+                  target="_blank"
                 >
-                  <FileInput
-                    className={`w-full`}
-                    name="dataURL"
-                    label="Choose PDF"
-                    handleInputState={handleInputState}
-                    type="docs"
-                    value={data.dataURL}
-                  />
-                </div>
-              </div>
-
-              <div
-                className={`${
-                  (data &&
-                    data.title != "" &&
-                    data.tag != "" &&
-                    data.nameTag != "" &&
-                    data?.dataURL?.size == undefined &&
-                    data.dataURL != "") ||
-                  isHP
-                    ? ""
-                    : "hidden"
-                } container border-none relative w-full justify-center items-center`}
-              >
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  class=" justify-center items-center w-[90%] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Đăng Tải Tài Liệu
-                </button>
-              </div>
+                  Bằng cách tải lên, bạn đồng ý với Thỏa thuận Trình tải lên LRO
+                  của chúng tôi
+                </a>
+              </p>
             </div>
           </div>
         </div>
 
-        {/* <div className="justify-center items-center">
-      <div class="max-w-2xl mx-auto">
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          for="file_input"
+        <div
+          className={`${!upload ? "hidden" : "block"} w-full  h-full bg-white`}
         >
-          Upload file
-        </label>
-        <input
-          class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-          id="file_input"
-          type="file"
-        />
-      </div>
-    </div> */}
+          <div class="w-full h-full">
+            <div className="w-full  h-full flex justify-center items-center ">
+              <div className="w-[60%] h-auto p-5  bg-red-500">
+                <div className="flex justify-between w-full gap-4">
+                  <div className="mb-2 w-full">
+                    <label
+                      for="email"
+                      className="block text-sm font-semibold text-gray-800"
+                    >
+                      Tiêu đề
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      id="title"
+                      onChange={handleChange}
+                      name="title"
+                      className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="mb-2 w-full">
+                    <label
+                      for="small"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Danh Mục
+                    </label>
+                    <select
+                      onChange={handleChange}
+                      id="small"
+                      name="category"
+                      required
+                      className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    >
+                      <option selected>Chọn một danh mục</option>
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                      <option value="FR">France</option>
+                      <option value="DE">Germany</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="w-full flex justify-between gap-4">
+                  <div className="mb-2 w-full">
+                    <div className="mb-2 w-full h-full">
+                      <label
+                        for="small"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Diễn giải
+                      </label>
+                      <textarea
+                        required
+                        name="content"
+                        onChange={handleChange}
+                        className="mb-2 w-full h-40"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="mb-2 w-full">
+                    <div className="mb-2 w-full">
+                      <label
+                        for="small"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Thẻ
+                      </label>
+                      <TagsInput
+                        value={selected}
+                        onChange={setSelected}
+                        name="tag"
+                        id="tag"
+                        placeHolder="Gắn thẻ bài viết của bạn. Tối đa 5 thẻ. Ít nhất 1 thẻ!"
+                        classNames={` w-full border-0`}
+                      />
+                    </div>
+                    <div className="mt-6 w-full">
+                      <label
+                        for="small"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Chế độ đăng tin
+                      </label>
+                      <div className="flex gap-1 bg-white  rounded-md justify-center items-center">
+                        <div
+                          onClick={(e) => setisP(!isP)}
+                          className={`${
+                            isP ? "bg-white" : "bg-green-400"
+                          } cursor-pointer block w-full px-4 py-2  text-purple-700  border-none rounded-md duration-100 ease-in-out focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40`}
+                        >
+                          Công khai
+                        </div>
+                        <div
+                          onClick={(e) => setisP(!isP)}
+                          className={`${
+                            !isP ? "bg-white" : "bg-green-400"
+                          } cursor-pointer block w-full px-4 py-2  text-purple-700  border-none rounded-md duration-100 ease-in-out focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40`}
+                        >
+                          Riêng Tư
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full flex justify-between gap-4">
+                  <div className="flex gap-4">
+                    <div onClick={(e) => setUpload(false)} class="flex">
+                      <input type="button" id="choose-me" class="peer hidden" />
+                      <label
+                        for="choose-me"
+                        class="select-none cursor-pointer rounded-lg border-2 border-gray-200
+   py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200 "
+                      >
+                        Quay Lại
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div class="flex">
+                      <input type="button" id="choose-me" class="peer hidden" />
+                      <label
+                        for="choose-me"
+                        class="select-none cursor-pointer rounded-lg border-2 border-gray-200
+   py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200 "
+                      >
+                        Xoá
+                      </label>
+                    </div>
+                    <div onClick={(e) => handleSubmit(e)} class="flex">
+                      <label
+                        for="choose-me"
+                        class="select-none cursor-pointer rounded-lg border-2 border-gray-200
+   py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200 "
+                      >
+                        Đăng Tin
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

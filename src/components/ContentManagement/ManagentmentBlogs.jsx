@@ -152,7 +152,7 @@ function ManaBV() {
                           <AiFillLike /> {item.like.length}
                         </p>
                       </button>
-                      <Link to={`/baiviet/update/${item._id}`}>
+                      <Link to={`/blogs/update/${item._id}`}>
                         <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
                           <p class="text-primary  shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
                             EDIT

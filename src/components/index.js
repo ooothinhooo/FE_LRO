@@ -2,6 +2,7 @@ export { default as Login } from "./Account/Login.jsx";
 export { default as Register } from "./Account/Register.jsx";
 
 export { default as Header } from "./Display/Header.jsx";
+export { default as Footer } from "./Display/Footer.jsx";
 
 //Tailieu
 export {default as DocForm} from './TaiLieu/DocForm.jsx'
@@ -14,6 +15,7 @@ export { default as UpdateFormBV } from "./BaiViet/UpdateFormBV.jsx";
 export { default as CardBV } from "./BaiViet/CardBV.jsx";
 //Blog
 export {default as CreateFormBlog} from "./Blogs/CreateFormBlog.jsx" 
+export { default as UpdateFormBlog } from "./Blogs/UpdateFormBlog.jsx"; 
 
 //! Contet Managements
 export { default as ManagementTL } from "./ContentManagement/ManagementTL.jsx";
@@ -28,6 +30,8 @@ export { default as CardViewUser } from "./components/CardViewUser.jsx";
 export { default as CardProFile } from "./components/CardProFile.jsx";
 export { default as Tag } from "./components/Tag.jsx";
 export { default as CardAuthor } from "./components/CardAuthor.jsx";
+export { default as CardDoc } from "./components/CardDoc.jsx";
+
 //! ViewProFile
 export { default as BoxViewBV } from "./ViewProFile/BoxViewBV.jsx";
 export { default as BoxViewTL } from "./ViewProFile/BoxViewTL.jsx";
