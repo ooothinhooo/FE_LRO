@@ -1,5 +1,5 @@
 // import { API_URL } from "./index.js";
-const API_URL = "http://localhost:8080"
+const API_URL = "https://api-lro.onrender.com";
 // console.log(API_URL);
 // // ROUTER NOT AUTH MIDDLEWARES
 // export const LOGIN = `${API_URL}/api/login`;
