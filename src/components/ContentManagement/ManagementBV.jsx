@@ -16,6 +16,11 @@ import {
   get_post_list,
 } from "../../service/BaiViet/GetPostList.js";
 import { isprivate_post } from "../../service/BaiViet/IsPrivatePost.js";
+import {
+  FUNC_ART_LIST_FOR_USER,
+  FUNC_DELETE_ART,
+  FUNC_SET_IS_PRIVATE_ART,
+} from "../../service/FuncArt/index.js";
 function ManaBV() {
   const { user } = useContext(ProductContext);
   const auth = user.token;
@@ -29,11 +34,12 @@ function ManaBV() {
 
   const getAllPost = async () => {
     try {
-      const { data } = await get_post_list(auth, page);
+      const { data } = await FUNC_ART_LIST_FOR_USER(auth, page);
       setDataPost(data);
-      setCount(data.data.count);
+      setCount(data.data.infoCreators.docs.length);
       setInfoCreators(data.data.infoCreators);
       setResult(data.data.result);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +82,7 @@ function ManaBV() {
 
   const DeletePosts = async (id) => {
     try {
-      const result = await delete_post(auth, id);
+      const result = await FUNC_DELETE_ART(auth, id);
       console.log(result);
       if (result.data.status == 200) {
         getAllPost();
@@ -89,7 +95,7 @@ function ManaBV() {
 
   const handleIsPrivate = async (id) => {
     try {
-      const result = await isprivate_post(auth, id);
+      const result = await FUNC_SET_IS_PRIVATE_ART(auth, id);
       console.log(result);
       if (result.data.status == 200) {
         getAllPost();
@@ -120,10 +126,10 @@ function ManaBV() {
                 </div>
                 <div className="bg-[#f8f9fa] justify-end  w-full md:w-[92%] p-2 md:ml-10  z-[100] ">
                   <div className="flex justify-between  ">
-                    <div className="flex justify-start items-center">
+                    <div className="flex justify-start items-center z-50">
                       <p
                         onClick={() => handleIsPrivate(item._id)}
-                        className="text-2xl mx-2"
+                        className="text-2xl mx-2 cursor-pointer"
                       >
                         {item.isPrivate ? (
                           <>

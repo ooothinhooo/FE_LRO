@@ -1,12 +1,12 @@
-// import { API_URL } from "./index.js";
-const API_URL = "https://api-lro.onrender.com";
+import { API_URL } from "./index.js";
+// const API_URL = "https://api-lro.onrender.com";
 // console.log(API_URL);
 // // ROUTER NOT AUTH MIDDLEWARES
 // export const LOGIN = `${API_URL}/api/login`;
 // export const REGISTER = `${API_URL}/api/register`;
 
-// export const FIND_ONE_DOC = `${API_URL}/api/findonedoc`;
-// export const FIND_ONE_ART = `${API_URL}/api/findoneart`;
+export const FIND_ONE_DOC = `${API_URL}/api/findonedoc`;
+export const FIND_ONE_ART = `${API_URL}/api/findoneart`;
 
 export const PAGE_DOCS = `${API_URL}/api/pagedocs`;
 export const PAGE_ARTS = `${API_URL}/api/pagearts`;

@@ -12,7 +12,12 @@ function ProFile() {
 
   const getUser = async () => {
     try {
-      const result = await view_user(id);
+      const result = await axios.get("http://localhost:8080/api/user/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: { _id: id },
+      });
       console.log(result);
       setData(result.data.data);
     } catch (error) {}

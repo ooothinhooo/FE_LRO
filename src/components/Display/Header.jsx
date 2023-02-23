@@ -25,6 +25,7 @@ function Header() {
   const LinkTo = useNavigate();
   const { user } = useContext(ProductContext);
   let id = user?.userId;
+  console.log(id);
   const href = window.location.href;
   useEffect(() => {
     if (href.includes("tailieu")) {

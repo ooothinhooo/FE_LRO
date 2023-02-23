@@ -9,7 +9,7 @@ import { ProductContext } from "../../contexts/ProductContextProvider";
 export default function AddArticle({ colDB }) {
   // const [user] = useAuthState(auth);
   const { user } = useContext(ProductContext);
-  const photo = user && user.photoURL ? user.photoURL : "";
+  const photo = user && user.avatar ? user.avatar : "";
   // console.log(user);
   const [formData, setFormData] = useState({
     description: "",
@@ -62,7 +62,7 @@ export default function AddArticle({ colDB }) {
           const articleRef = collection(db, colDB);
           addDoc(articleRef, {
             // title: formData.title,
-            userPhotoURL: user.photoURL,
+            userPhotoURL: user.avatar,
             description: formData.description,
             imageUrl: url,
             createdAt: Timestamp.now().toDate(),
@@ -122,10 +122,10 @@ export default function AddArticle({ colDB }) {
             <div class="flex items-center justify-center md:m-auto ">
               <div class="relative md:w-[80%] w-full flex items-center justify-center  ">
                 <div class="hidden mr-2 md:block md:relative  md:flex md:absolute inset-y-0 left-0 items-center   pointer-events-none">
-                  <img className="w-14 h-14 rounded-lg" src={user.photoURL} />
+                  <img className="w-14 h-14 rounded-lg" src={photo} />
                 </div>
                 <textarea
-                  class="bg-primary border border-gray-300 text-gray-50 text-sm
+                  class="bg-white border border-gray-300 text-black text-sm
                                      focus:ring-blue-500 focus:border-blue-500  w-[75%] 
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   name="description"

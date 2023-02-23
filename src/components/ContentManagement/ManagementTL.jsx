@@ -5,36 +5,33 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-import { GET_ALL_DOC, GET_DOC } from "../../service/apiConstant.js";
-import { delete_doc } from "../../service/TaiLieu/DeleteDoc.js";
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
-import { get_doc } from "../../service/TaiLieu/GetDoc.js";
-import { get_doc_list } from "../../service/TaiLieu/GetDocList.js";
-import { isprivate_doc } from "../../service/TaiLieu/IsPrivateDoc.js";
+
+import {
+  FUNC_DELETE_DOC,
+  FUNC_DOC_LIST_FOR_USER,
+  FUNC_SET_IS_PRIVATE_DOC,
+} from "../../service/FuncDoc/index.js";
 function ManagementTL() {
   const { user } = useContext(ProductContext);
   const auth = user.token;
   const uid = user.userId;
-  const [docs, setdocs] = useState([]);
-
   const [page, setPage] = useState(1);
   const [count, setCount] = useState("");
   const [infoCreators, setInfoCreators] = useState("");
   const [result, setResult] = useState([]);
   const getAllDocs = async () => {
     try {
-      const { data } = await get_doc_list(auth, page);
-      setdocs(data);
+      const { data } = await FUNC_DOC_LIST_FOR_USER(auth, page);
       setCount(data.data.count);
       setInfoCreators(data.data.infoCreators);
       setResult(data.data.result);
+      console.log(result);
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(docs);
   const nextPage = () => {
     const pg = page < Math.ceil(result.length / 10) ? page + 1 : 1;
     setPage(pg);
@@ -53,7 +50,7 @@ function ManagementTL() {
   function handleDelete(id) {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: `${id}`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -69,7 +66,7 @@ function ManagementTL() {
 
   const DeleteDocs = async (id) => {
     try {
-      const result = await delete_doc(auth, id);
+      const result = await FUNC_DELETE_DOC(auth, id);
       console.log(result);
       if (result.data.status == 200) {
         getAllDocs();
@@ -84,7 +81,7 @@ function ManagementTL() {
   }, []);
   const handleIsPrivate = async (id) => {
     try {
-      const result = await isprivate_doc(auth, id);
+      const result = await FUNC_SET_IS_PRIVATE_DOC(auth, id);
       console.log(result);
       if (result.data.status == 200) {
         // getAllPost();
@@ -114,21 +111,22 @@ function ManagementTL() {
                     />
                   </svg>
                 </div>
-                <div className="bg-[#f8f9fa] justify-end  w-full md:w-[92%] p-2 md:ml-10  z-[100] ">
+
+                <div className="bg-white justify-end  w-full md:w-[92%] p-2 md:ml-10  z-[100] ">
                   <div className="flex justify-between  ">
-                    <div className="flex justify-start items-center">
+                    <div className="flex justify-start items-center z-50">
                       <p
                         onClick={() => handleIsPrivate(item._id)}
-                        className="text-2xl mx-2"
+                        className="text-2xl mx-2 cursor-pointer hover:text-red-900 z-60"
                       >
                         {item.isPrivate ? (
-                          <>
+                          <span className="cursor-pointer">
                             <FaLock className="text-red-400" />
-                          </>
+                          </span>
                         ) : (
-                          <>
+                          <span className="cursor-pointer">
                             <FaLockOpen className="text-green-400" />
-                          </>
+                          </span>
                         )}
                       </p>
                       <p className="text-md md:text-lg text-blue-400  font-extrabold">
@@ -158,7 +156,7 @@ function ManagementTL() {
                   </div>
                   <div className="p-1">
                     <div className="flex justify-start items-center mx-1">
-                      <div className="mx-1">
+                      {/* <div className="mx-1">
                         <div class="inline-block relative py-1 text-xs">
                           <div class="absolute inset-0 text-blue-200 flex">
                             <svg height="100%" viewBox="0 0 50 100">
@@ -175,26 +173,29 @@ function ManagementTL() {
                             <span>&nbsp;</span>
                           </span>
                         </div>
-                      </div>
-                      <div className="mx-1">
-                        <div class="inline-block relative py-1 text-xs">
-                          <div class="absolute inset-0 text-green-200 flex">
-                            <svg height="100%" viewBox="0 0 50 100">
-                              <path
-                                d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            <div class="flex-grow h-full -ml-px bg-green-200 rounded-md rounded-l-none"></div>
+                      </div> */}
+                      {item?.tag?.map((i) => {
+                        return (
+                          <div className="mx-1">
+                            <div class="inline-block relative py-1 text-xs">
+                              <div class="absolute inset-0 text-blue-200 flex">
+                                <svg height="100%" viewBox="0 0 50 100">
+                                  <path
+                                    d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <div class="flex-grow h-full -ml-px bg-blue-200 rounded-md rounded-l-none"></div>
+                              </div>
+                              <span class="relative text-blue-500 uppercase font-semibold pr-px">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                {i}
+                                <span>&nbsp;</span>
+                              </span>
+                            </div>
                           </div>
-                          <span class="relative text-green-500 uppercase font-semibold pr-px">
-                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            {item.nameTag}
-
-                            <span>&nbsp;</span>
-                          </span>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

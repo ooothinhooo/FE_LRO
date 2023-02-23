@@ -56,6 +56,8 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
       >
         <input
           type="file"
+          name="upload"
+          accept="application/pdf,application/vnd.ms-excel"
           ref={inputRef}
           onChange={(e) => handleInputState(name, e.currentTarget.files[0])}
           vlaue={value}

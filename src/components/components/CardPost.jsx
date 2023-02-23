@@ -6,6 +6,7 @@ import {
   FUNC_INTERACT_ART,
   FUNC_PAGE_ART,
 } from "../../service/FuncArt/index.js";
+import { Link } from "react-router-dom";
 function CardPost() {
   const { user } = useContext(ProductContext);
   const [page, setPage] = useState(Number(1));
@@ -79,7 +80,7 @@ function CardPost() {
                       <div className="flex justify-between items-center">
                         <div className="flex justify-start items-center">
                           <img
-                            src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                            src={item?.creatorsPhoto}
                             alt="avatar"
                             className="w-8 h-8 rounded-full mr-2 "
                           />
@@ -90,9 +91,11 @@ function CardPost() {
                         <span className="mx-1 p-1 "> {item?.date}</span>
                       </div>
                       <div className="block">
-                        <h1 className="lg:text-lg md:text-md font-bold text-blue-800 hover:text-blue-400 cursor-pointer">
-                          {item?.title}
-                        </h1>
+                        <Link to={`/baiviet/view/${item?._id}`}>
+                          <h1 className="lg:text-lg md:text-md font-bold text-blue-800 hover:text-blue-400 cursor-pointer">
+                            {item?.title}
+                          </h1>
+                        </Link>
                         <p>
                           {item?.tag.map((i) => {
                             return (

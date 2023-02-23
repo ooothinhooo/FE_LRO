@@ -44,6 +44,19 @@ function DocForm() {
     if (resultLogin.status == 200) {
       if (resultLogin.data.status === 200) {
         toast(resultLogin.data.message);
+        setData({
+          title: "",
+          tag: "",
+          category: "",
+          content: "",
+          docs_URL: "",
+          creatorsName: user.first_name + user.last_name,
+          creatorsId: user.userId,
+          creatorsPhoto: user.avatar,
+          isPrivate: "",
+        });
+        setUpload(!upload);
+
         Swal.fire({
           position: "center",
           icon: "success",
@@ -70,17 +83,19 @@ function DocForm() {
     data.isPrivate = isP;
     data.tag = selected;
     console.table(data);
-
-    if (data.docs_URL?.size == undefined) {
-      setUpload(true);
-    }
+    console.log(upload);
   }, [data, isP, selected]);
+  useEffect(() => {
+    if (data.docs_URL?.size == undefined) {
+      setUpload(!upload);
+    }
+  }, [data.docs_URL]);
   return (
     <div>
       <ToastContainer />
 
       <div className={` w-full  h-[90vh]  bg-white`}>
-        <div className={`h-full ${upload ? "hidden" : "block"}`}>
+        <div className={`h-full ${!upload ? "hidden" : "block"}`}>
           <div class="flex w-full h-full  items-center justify-center bg-grey-lighter t">
             <div class="max-w-2xl mx-auto">
               <div class="flex items-center justify-center w-full">
@@ -108,7 +123,7 @@ function DocForm() {
                       and drop
                     </p>
                     <p class="text-xs text-gray-500 dark:text-gray-400">
-                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                      PDF (MAX. 800x400px)
                     </p>
                   </div>
                   {/* <input id="dropzone-file" type="file" class="hidden" />
@@ -127,8 +142,7 @@ function DocForm() {
               </div>
 
               <p class="mt-5">
-                Các loại tệp được hỗ trợ : Powerpoint (ppt, pptx, ppsx, potx),
-                PDF, Word (doc, docx)
+                Các loại tệp được hỗ trợ : PDF
                 <a
                   class="text-blue-600 hover:underlin block"
                   href="#"
@@ -143,7 +157,7 @@ function DocForm() {
         </div>
 
         <div
-          className={`${!upload ? "hidden" : "block"} w-full  h-full bg-white`}
+          className={`${upload ? "hidden" : "block"} w-full  h-full bg-white`}
         >
           <div class="w-full h-full">
             <div className="w-full  h-full flex justify-center items-center ">
