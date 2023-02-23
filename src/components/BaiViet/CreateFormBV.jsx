@@ -47,10 +47,12 @@ function FormBV() {
       if (result.data.status === 200) {
         toast(result.data.message);
         setTimeout(() => {
-          //   window.location.reload();
-          setSelected("");
+            
+          setSelected([]);
           setValue("");
           setoTitle("");
+          window.location = "/baiviet";
+
         }, 1000);
         return;
       }

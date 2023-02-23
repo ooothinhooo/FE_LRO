@@ -14,9 +14,9 @@ export default function LikeArticle({ id, likes, colDB }) {
   const likesRef = doc(db, colDB, id);
   // console.log(likes);
   const handleLike = () => {
-    if (likes?.includes(user.photoURL)) {
+    if (likes?.includes(user.avatar)) {
       updateDoc(likesRef, {
-        likes: arrayRemove(user.photoURL),
+        likes: arrayRemove(user.avatar),
       })
         .then(() => {
           console.log("unliked");
@@ -26,7 +26,7 @@ export default function LikeArticle({ id, likes, colDB }) {
         });
     } else {
       updateDoc(likesRef, {
-        likes: arrayUnion(user.photoURL),
+        likes: arrayUnion(user.avatar),
       })
         .then(() => {
           console.log("liked");
@@ -41,11 +41,11 @@ export default function LikeArticle({ id, likes, colDB }) {
       onClick={handleLike}
       style={{
         cursor: "pointer",
-        color: likes?.includes(user.photoURL) ? "red" : null,
+        color: likes?.includes(user.avatar) ? "red" : null,
       }}
       className="text-2xl text-white flex items-center justify-center "
     >
-      {!likes?.includes(user.photoURL) ? (
+      {!likes?.includes(user.avatar) ? (
         <>
           <AiOutlineLike className="" />
         </>

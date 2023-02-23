@@ -82,8 +82,8 @@ export default function Articles({ colDB }) {
                             border-gray-200 sm:px-4 sm:py-4 md:px-4 rounded-lg  md:w-2/3
                             ${
                               user && user.userId === userId
-                                ? "bg-[#4D4545]"
-                                : "bg-[#283149]"
+                                ? "bg-[#27658dd3]"
+                                : "bg-[#435db2a1]"
                             }
                             `}
                 >
@@ -157,7 +157,6 @@ export default function Articles({ colDB }) {
                               <span className="flex justify-center items-center">
                                 <GiRapidshareArrow className="mr-1" />{" "}
                                 <span className="mx-[3px] text-green-500">
-                                  {" "}
                                   {comments?.length}{" "}
                                 </span>{" "}
                                 Phản hồi
@@ -185,9 +184,9 @@ export default function Articles({ colDB }) {
                   allowZeroExpanded
                   className="bg-primary  md:m-auto md:w-[60%] w-full"
                 >
-                  <AccordionItem key={id} className="  bg-primary">
+                  <AccordionItem key={id} className="  bg-white">
                     <AccordionItemHeading>
-                      <AccordionItemButton className="flex bg-[#00454A] mt-1 p-1 rounded-md text-gray-300">
+                      <AccordionItemButton className="flex bg-[#c8eef0] mt-1 p-1 rounded-md text-gray-300">
                         <span className="mr-[6px] text-[#4E9F3D]">
                           Rep Comment
                         </span>{" "}

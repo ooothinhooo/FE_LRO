@@ -47,7 +47,7 @@ export default function Comment({ id, colDB }) {
           userName: user.username,
           comment: comment,
           createdAt: new Date(),
-          userPhotoURL: user.photoURL,
+          userPhotoURL: user.avatar,
           commentId: uuidv4(),
         }),
       }).then(() => {
@@ -127,10 +127,10 @@ export default function Comment({ id, colDB }) {
                       </div>
                       <div
                         class={` p-2 shadow-lg rounded-lg  ${
-                          uid === user.userId ? "bg-[#4D4545]" : "bg-[#283149]"
+                          uid === user.userId ? "bg-[#fbe3e3]" : "bg-[#c9d4f5]"
                         }`}
                       >
-                        <span className="text-gray-200 text-sm md:text-md">
+                        <span className="text-green-700 text-sm md:text-md">
                           {" "}
                           {comment.substring(0, 5000)}
                         </span>
@@ -170,7 +170,7 @@ export default function Comment({ id, colDB }) {
         {user && user ? (
           <input
             type="text"
-            className="form-control mt-4 mb-5 w-full bg-[#283149] text-gray-200"
+            className="form-control mt-4 mb-5 w-full bg-[#dce2f4] text-black"
             value={comment}
             onChange={(e) => {
               setComment(e.target.value);

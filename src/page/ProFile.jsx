@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { CardViewUser, Header } from "../components/index.js";
 import { view_user } from "../service/api.getUser.js";
 import { VIEW_USER } from "../service/apiConstant.js";
+import { FUNC_VIEW_PROFILE_USER } from "../service/index.js";
 
 function ProFile() {
   let { id } = useParams();
@@ -12,12 +13,7 @@ function ProFile() {
 
   const getUser = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/user/", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: { _id: id },
-      });
+      const result = await FUNC_VIEW_PROFILE_USER(id);
       console.log(result);
       setData(result.data.data);
     } catch (error) {}

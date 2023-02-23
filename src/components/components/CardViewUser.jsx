@@ -3,11 +3,21 @@ import React, { useState } from "react";
 import { BoxViewBV, BoxViewTL, Skenleton } from "../index.js";
 
 function CardViewUser({ data }) {
-  const [isMenu, setIsMenu] = useState(1);
+  const [isMenu, setIsMenu] = useState(2);
+  console.log(data);
 
+  function render() {
+    if (isMenu == 1) {
+      return <BoxViewTL data={data.docs} />;
+    } else if (isMenu == 2) {
+      return <BoxViewTL data={data.articles} />;
+    } else {
+      return <BoxViewTL data={data.disscussion} />;
+    }
+  }
   return (
     <>
-      {data && data != "" ? (
+      {data ? (
         <div class="p-16">
           <div class="p-8 bg-white shadow mt-24">
             {" "}
@@ -25,14 +35,14 @@ function CardViewUser({ data }) {
                 <div>
                   {" "}
                   <p class="font-bold text-gray-700 text-xl">
-                    {data?.posts?.length}
+                    {data?.articles?.length}
                   </p>{" "}
                   <p class="text-gray-400">Bài Viết</p>{" "}
                 </div>{" "}
                 <div>
                   {" "}
                   <p class="font-bold text-gray-700 text-xl">
-                    {data?.blog?.length}
+                    {data?.disscussion?.length}
                   </p>{" "}
                   <p class="text-gray-400">Blogs</p>{" "}
                 </div>{" "}
@@ -40,7 +50,7 @@ function CardViewUser({ data }) {
               <div class="relative">
                 {" "}
                 <div class="w-48 h-48  mx-auto rounded-full absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                  <img src={data.photoURL} alt="" />
+                  <img src={data.avatar} alt="" />
                 </div>{" "}
               </div>{" "}
               <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
@@ -154,21 +164,21 @@ function CardViewUser({ data }) {
                     isMenu == 1 ? "block" : "hidden"
                   } bg-green-200 shadow-xl border border-gray-100 font-light p-8 rounded text-gray-500 bg-white mt-6`}
                 >
-                  <BoxViewTL data={data?.docs} />
+                  {render()}
                 </div>{" "}
                 <div
                   class={`${
                     isMenu == 2 ? "block" : "hidden"
                   } bg-green-200 shadow-xl border border-gray-100 font-light p-8 rounded text-gray-500 bg-white mt-6`}
                 >
-                  <BoxViewBV data={data?.posts} />
+                  {render()}
                 </div>{" "}
                 <div
                   class={`${
                     isMenu == 3 ? "block" : "hidden"
                   } bg-blue-300 shadow-xl border border-gray-100 font-light p-8 rounded text-gray-500 bg-white mt-6`}
                 >
-                  Chưa Hoàn Thiện
+                  {render()}
                 </div>
               </div>
             </div>

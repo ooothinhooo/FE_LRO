@@ -19,13 +19,13 @@ import CardPost from "../../components/components/CardPost.jsx";
 
 function BaiVietPage() {
   return (
-    <div>
+    <div className="bg-white">
       <div>
         <Header />
       </div>
       {/* Hiện thị */}
 
-      <div className="w-full flex justify-center items-end my-4 border-none shadow-lg rounded-lg ">
+      <div className="w-full flex  justify-center items-end my-4 border-none shadow-lg rounded-lg ">
         <div class="w-full">
           <CardPost />
           {/* 
