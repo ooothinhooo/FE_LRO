@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { FaLockOpen, FaLock } from "react-icons/fa";
-import MDEditor from "@uiw/react-md-editor";
-import { toast } from "react-toastify";
-import data from "../../data/course.js";
 
 import { CreateFormBV, Header } from "../../components";
 

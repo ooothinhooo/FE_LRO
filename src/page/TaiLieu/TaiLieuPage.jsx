@@ -9,9 +9,8 @@ import {
   Header,
 } from "../../components/index.js";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
-import dataCourse from "../../data/course.js";
-import { post_hight } from "../../service/BaiViet/GetPostHight.js";
-import { GET_USER_HIGHT } from "../../service/apiConstant.js";
+
+
 function TaiLieuPage() {
   const { user } = useContext(ProductContext);
   const token = user?.token;

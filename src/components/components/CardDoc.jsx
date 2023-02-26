@@ -49,7 +49,7 @@ function CardDoc() {
 
   const nextPage = () => {
     console.log("NEXT PAGE = " + page);
-    const pg = page < Math.ceil(DocsData.length / 10) ? page + 1 : 1;
+    const pg = page >= Math.ceil(DocsData.length / 10) ? page + 1 : 1;
     setPage(pg);
     // getPagination();
   };
@@ -77,16 +77,16 @@ function CardDoc() {
               <>
                 <>
                   <div className="">
-                    <div className=" w-full flex justify-center items-center bg-white">
-                      <div className="w-[88%] py-5 px-4 bg-blue-gray-100 flex justify-center items-center ">
-                        <div class="grid grid-cols-5 gap-4">
+                    <div className=" w-full flex justify-center items-center">
+                      <div className="w-[88%] py-5 px-4 bg-gray-100 flex justify-center items-center ">
+                        <div class="grid grid-cols-4 gap-6">
                           {DocsData &&
                             DocsData.map((item, index) => {
                               return (
                                 <div>
                                   <div
                                     key={item?._id}
-                                    class="w-[244px] h-[333px] flex items-center justify-center bg-gray-100 rounded-md  hover:bg-blue-400 ease-in-out duration-100 "
+                                    class="w-[266px] h-[333px] flex items-center justify-center bg-gray-100 rounded-md  hover:bg-blue-400 ease-in-out duration-100 "
                                   >
                                     <div class="w-[99%] h-[99%]  bg-gray-200  p-4 rounded-lg    shadow-md shadow-blue-300/30">
                                       <div className="flex justify-start items-end my-1 z-20 ">
@@ -105,21 +105,22 @@ function CardDoc() {
                                         title="W3Schools Free Online Web Tutorials"
                                         frameborder="0"
                                         scrolling="0"
-                                        scroll="no"
                                       ></iframe>
                                       <Link to={`/tailieu/view/${item?._id}`}>
-                                        <h3 class="text-gray-900 hover:text-blue-500 cursor-pointer font-bold ">
-                                          {item?.title.substring(0, 22) + "..."}
+                                        <h3 class="text-gray-900 hover:text-blue-500 cursor-pointer font-serif m-1 py-1 ">
+                                          {item?.title.substring(0, 27) + "..."}
                                         </h3>
                                       </Link>
                                       <p class="text-gray-800 font-light mt-1 text-xs">
-                                        {item?.content.substring(0, 60) + "..."}
+                                        {/* {item?.content.substring(0, 60) + "..."} */}
                                       </p>
-                                      <p className="text-xs text-blue-300 w-full h-8">
-                                        {item?.tag.map((i) => {
+                                      <p className="text-xs text-blue-800 w-full h-8 ">
+                                        {item?.tag.slice(0, 3).map((i) => {
                                           return (
                                             <>
-                                              <span className="mx-1">{i}</span>
+                                              <span className="mx-1 p-1 bg-pink-200 rounded-md font-thin">
+                                                {i}
+                                              </span>
                                             </>
                                           );
                                         })}

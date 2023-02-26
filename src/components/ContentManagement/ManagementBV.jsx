@@ -6,16 +6,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-import { GET_ALL_POST, ISPRIVATE_POST } from "../../service/apiConstant.js";
-import { get_posts } from "../../service/BaiViet/GetPost.js";
+
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
-import { delete_post } from "../../service/BaiViet/DeletePost.js";
-import {
-  get_doc_list,
-  get_post_list,
-} from "../../service/BaiViet/GetPostList.js";
-import { isprivate_post } from "../../service/BaiViet/IsPrivatePost.js";
 import {
   FUNC_ART_LIST_FOR_USER,
   FUNC_DELETE_ART,
@@ -175,41 +168,28 @@ function ManaBV() {
                   </div>
                   <div className="p-1">
                     <div className="flex justify-start items-center mx-1">
-                      <div className="mx-1">
-                        <div class="inline-block relative py-1 text-xs">
-                          <div class="absolute inset-0 text-blue-200 flex">
-                            <svg height="100%" viewBox="0 0 50 100">
-                              <path
-                                d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            <div class="flex-grow h-full -ml-px bg-blue-200 rounded-md rounded-l-none"></div>
+                      {item?.tag?.map((i) => {
+                        return (
+                          <div className="mx-1">
+                            <div class="inline-block relative py-1 text-xs">
+                              <div class="absolute inset-0 text-blue-200 flex">
+                                <svg height="100%" viewBox="0 0 50 100">
+                                  <path
+                                    d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <div class="flex-grow h-full -ml-px bg-blue-200 rounded-md rounded-l-none"></div>
+                              </div>
+                              <span class="relative text-blue-500 uppercase font-semibold pr-px">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                {i}
+                                <span>&nbsp;</span>
+                              </span>
+                            </div>
                           </div>
-                          <span class="relative text-blue-500 uppercase font-semibold pr-px">
-                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            {item.tag}
-                            <span>&nbsp;</span>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mx-1">
-                        <div class="inline-block relative py-1 text-xs">
-                          <div class="absolute inset-0 text-green-200 flex">
-                            <svg height="100%" viewBox="0 0 50 100">
-                              <path
-                                d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            <div class="flex-grow h-full -ml-px bg-green-200 rounded-md rounded-l-none"></div>
-                          </div>
-                          <span class="relative text-green-500 uppercase font-semibold pr-px">
-                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span> {item.nameTag}
-                            <span>&nbsp;</span>
-                          </span>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

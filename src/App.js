@@ -12,7 +12,6 @@ import { GET_ALL_DOC } from "./service/apiConstant.js";
 import {
   Home,
   BaiVietPage,
-  BlogsPage,
   TaiLieuPage,
   ThaoLuanPage,
   LoginPage,
@@ -24,9 +23,6 @@ import {
   ViewBaiVietPage,
   ContentManagement,
   ProFile,
-  CreateBlog,
-  UpdateBlog,
-  ViewBlog,
 } from "./page/";
 
 function App() {
@@ -77,13 +73,6 @@ function App() {
                 <Route path="/tailieu" element={<TaiLieuPage />} />
                 <Route path="/tailieu/create" element={<CreateTaiLieuPage />} />
                 <Route path="/tailieu/view/:id" element={<ViewTaiLieuPage />} />
-                //*BlogsPage
-                <Route path="/blogs" element={<BlogsPage />} />
-                <Route path="/blogs/create" element={<CreateBlog />} />
-                <Route path="/blogs/update/:id" element={<UpdateBlog />} />
-                <Route path="/blogs/view/:id" element={<ViewBlog />} />
-                //* ThaoLuanPage
-                <Route path="/thaoluan" element={<ThaoLuanPage />} />
               </>
             ) : (
               <>{/* <Route path="/register" element={<Register />} /> */}</>

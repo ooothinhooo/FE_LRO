@@ -10,7 +10,7 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import { ManagementBV, ManagementTL, ManagementBlogs } from "../components";
+import { ManagementBV, ManagementTL } from "../components";
 function ContentManagement() {
   const [isBar, setIsBar] = useState(Boolean(true));
   const [isBV, setIsBV] = useState(Boolean(true));
@@ -24,8 +24,6 @@ function ContentManagement() {
       return <ManagementTL />;
     } else if (openTab == 2) {
       return <ManagementBV />;
-    } else {
-      return <ManagementBlogs />;
     }
   }
   // useEffect(()=>{
@@ -37,8 +35,8 @@ function ContentManagement() {
         <Header />
       </div>
 
-      <div className="flex justify-center items-center w-full bg-white">
-        <div className="md:w-[90%] w-full  h-screen p-4 bg-gray-100 rounded-md  border-md shadow-2xl  shadow-cyan-500/10  ">
+      <div className="h-[150vh] flex justify-center items-center w-full bg-white">
+        <div className="md:w-[90%] w-full  h-full p-4 bg-blue-50 rounded-md  border-md shadow-2xl  shadow-cyan-500/10  ">
           <div className="w-full h-10 flex justify-center items-center">
             <div className="w-[90%] h-full">
               <div class="">
@@ -68,22 +66,10 @@ function ContentManagement() {
                       Bài Viết Của Bạn
                     </a>
                   </li>
-                  <li class="w-full">
-                    <a
-                      class={`${
-                        openTab == 3 ? "bg-blue-300" : "bg-white"
-                      } inline-block w-full p-4 text-gray-900  rounded-r-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none dark:bg-gray-700 dark:text-white`}
-                      onClick={(e) => setOpenTab(3)}
-
-                      // class="inline-block w-full p-4 bg-white rounded-r-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                    >
-                      Câu Hỏi Của Bạn
-                    </a>
-                  </li>
                 </ul>
               </div>
-              <div>
-                <div>{render()}</div>
+              <div className="w-full h-screen">
+                <div className="w-full ">{render()}</div>
               </div>
             </div>
           </div>
