@@ -14,7 +14,7 @@ import {
   FUNC_COUNT_VIEW_DOC,
   FUNC_FIND_ONE_DOC,
 } from "../../service/FuncDoc/index.js";
-import { find_one_doc } from "../../service/TaiLieu/FindOneDoc.js";
+
 
 function ViewTaiLieuPage() {
   const { user } = useContext(ProductContext);

@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import AddArticle from "../../components/Comments/AddArticle.jsx";
 import Articles from "../../components/Comments/Articles.jsx";
 import { Header } from "../../components";
-import { find_one_post } from "../../service/BaiViet/FindOnePost.js";
+
 import {
   FUNC_CREATE_ART,
   FUNC_FIND_ONE_ART,

@@ -8,13 +8,7 @@ import {
   Header,
 } from "../../components/index.js";
 
-import { AiFillHeart, AiOutlineHeart, AiFillWechat } from "react-icons/ai";
-import { FaRegEye } from "react-icons/fa";
-import { IoChatbubblesSharp } from "react-icons/io";
-import dataCourse from "../../data/course.js";
-import { doc_hight } from "../../service/TaiLieu/GetDocHight.js";
-import axios from "axios";
-import { GET_USER_HIGHT } from "../../service/apiConstant.js";
+
 import CardPost from "../../components/components/CardPost.jsx";
 
 function BaiVietPage() {

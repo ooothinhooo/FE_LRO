@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { FaLockOpen, FaLock } from "react-icons/fa";
 import MDEditor from "@uiw/react-md-editor";
 import { ToastContainer, toast } from "react-toastify";
 import data from "../../data/course.js";
-import { add_post } from "../../service/BaiViet/AddPost.js";
 import { TagsInput } from "react-tag-input-component";
-
+import Swal from "sweetalert2";
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
 import { FUNC_CREATE_ART } from "../../service/FuncArt/index.js";
@@ -41,32 +38,46 @@ function FormBV() {
 
   console.table(form);
   const handleSubmit = async () => {
-    const result = await FUNC_CREATE_ART(auth, form);
-    console.log(result);
-    if (result.status == 200) {
-      if (result.data.status === 200) {
-        toast(result.data.message);
-        setTimeout(() => {
-            
-          setSelected([]);
-          setValue("");
-          setoTitle("");
-          window.location = "/baiviet";
-
-        }, 1000);
-        return;
+    if (form.title != "" && form.content != "" && checkForm()) {
+      const result = await FUNC_CREATE_ART(auth, form);
+      console.log(result);
+      if (result.status == 200) {
+        if (result.data.status === 200) {
+          toast(result.data.message);
+          setTimeout(() => {
+            setSelected([]);
+            setValue("");
+            setoTitle("");
+            window.location = "/baiviet";
+          }, 1000);
+          return;
+        }
+        if (result.data.status === 201) {
+          toast(result.data.data);
+          return;
+        }
+        if (result.data.status === 202) {
+          toast(result.data.message);
+          return;
+        }
       }
-      if (result.data.status === 201) {
-        toast(result.data.data);
-        return;
-      }
-      if (result.data.status === 202) {
-        toast(result.data.message);
-        return;
-      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Vui Lòng Điền Đủ Thông Tin",
+        text: ``,
+      });
     }
   };
 
+  function checkForm() {
+    if (selected.length > 0 && selected.length < 6) {
+      if (selected.length > 2) {
+        return true;
+      }
+      return false;
+    } else return false;
+  }
   return (
     <>
       <div className="bg-white w-full flex justify-center items-center">
@@ -137,7 +148,7 @@ function FormBV() {
                     onChange={setSelected}
                     name="tag"
                     id="tag"
-                    placeHolder="Gắn thẻ bài viết của bạn. Tối đa 5 thẻ. Ít nhất 1 thẻ!"
+                    placeHolder="Gắn thẻ bài viết của bạn. Tối đa 5 thẻ. Ít nhất 3 thẻ!"
                     classNames={` w-full border-0 h-auto`}
                   />
                 </div>

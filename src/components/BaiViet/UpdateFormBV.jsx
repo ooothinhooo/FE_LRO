@@ -2,170 +2,223 @@ import React, { useState, useEffect } from "react";
 import { FaLockOpen, FaLock } from "react-icons/fa";
 import MDEditor from "@uiw/react-md-editor";
 import { ToastContainer, toast } from "react-toastify";
-import data from "../../data/course.js";
 
+import { TagsInput } from "react-tag-input-component";
+import Swal from "sweetalert2";
 import { useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider";
-import { find_one_post } from "../../service/BaiViet/FindOnePost.js";
+
 import { useParams } from "react-router-dom";
-import { update_post } from "../../service/BaiViet/UpdatePost.js";
+import {
+  FUNC_FIND_ONE_ART,
+  FUNC_UPDATE_ART,
+} from "../../service/FuncArt/index.js";
+
 function FormBV() {
   const { user } = useContext(ProductContext);
   const auth = user?.token;
 
   let { id } = useParams();
-
   const [dataArr, setDataArr] = useState([]);
-
   const [value, setValue] = React.useState("");
   const [otitle, setoTitle] = React.useState("");
-  const [tag, setTag] = React.useState("");
-  const [viewprivate, setPrivate] = useState(false);
+  const [selected, setSelected] = useState([]);
+  const [isP, setisP] = useState(false);
 
   const [form, setForm] = useState({
-    post_id: id,
-    userId: "",
+    _id: id,
     title: otitle,
-    desc: value,
-    nameTag: "",
-    tag: tag,
-    isPrivate: Boolean(viewprivate),
-    creater: "",
-    createrPhoto: "",
+    content: value,
+    tag: selected,
+    isPrivate: Boolean(isP),
+    creatorsName: user.first_name + " " + user.last_name,
+    creatorsId: user.userId,
+    creatorsPhoto: user.avatar,
   });
   const GetPost = async () => {
     try {
-      const result = await find_one_post(id);
+      const result = await FUNC_FIND_ONE_ART(id);
       setDataArr(result.data.data);
       var re = result.data.data;
       // console.log(result);
       setoTitle(re.title);
-      setTag(re.tag);
+      setSelected(re.tag);
       setValue(re.desc);
-      setPrivate(Boolean(re.isPrivate));
+      setisP(Boolean(re.isPrivate));
       setForm({
-        post_id: id,
-        userId: re.userId,
         title: otitle,
-        desc: value,
-        nameTag: "",
-        tag: tag,
-        isPrivate: Boolean(viewprivate),
-        creater: re.creater,
-        createrPhoto: re.createrPhoto,
+        content: value,
+        tag: selected,
+        isPrivate: Boolean(isP),
+        creatorsName: user.first_name + " " + user.last_name,
+        creatorsId: user.userId,
+        creatorsPhoto: user.avatar,
       });
     } catch (error) {}
   };
-  // GetPost();
+
   useEffect(() => {
     setForm({
-      post_id: id,
-      userId: dataArr?.userId,
+      _id: id,
       title: otitle,
-      desc: value,
-      nameTag: courses[0]?.name,
-      tag: tag,
-      isPrivate: Boolean(viewprivate),
-      creater: dataArr?.creater,
-      createrPhoto: dataArr?.createrPhoto,
+      content: value,
+      tag: selected,
+      isPrivate: Boolean(isP),
+      creatorsName: user.first_name + " " + user.last_name,
+      creatorsId: user.userId,
+      creatorsPhoto: user.avatar,
     });
-  }, [otitle, value, tag, dataArr]);
+
+    console.table(form);
+  }, [otitle, value, isP, selected]);
+
   useEffect(() => {
     GetPost();
   }, []);
   // console.table(dataArr);
   // console.table(form);
 
-  const courses = data.filter(function (item) {
-    return item.key === tag?.toUpperCase();
-  });
-
   const handleSubmit = async () => {
-    const result = await update_post(auth, form);
-    console.log(result);
-    if (result.status == 200) {
-      if (result.data.status === 200) {
-        toast(result.data.message);
-        setTimeout(() => {
-          //   window.location.reload();
-          setTag("");
-          setValue("");
-          setoTitle("");
-        }, 1000);
-        return;
+    if (form.title != "" && form.content != "" && checkForm()) {
+      const result = await FUNC_UPDATE_ART(auth, form);
+      console.log(result);
+      if (result.status == 200) {
+        if (result.data.status === 200) {
+          toast(result.data.message);
+          setTimeout(() => {
+            setSelected([]);
+            setValue("");
+            setoTitle("");
+            setForm({
+              _id: id,
+              title: "",
+              content: "",
+              tag: "",
+              isPrivate: Boolean(isP),
+              creatorsName: user.first_name + " " + user.last_name,
+              creatorsId: user.userId,
+              creatorsPhoto: user.avatar,
+            });
+            // window.location = "/baiviet";
+          }, 1000);
+          return;
+        }
+        if (result.data.status === 201) {
+          toast(result.data.data);
+          return;
+        }
+        if (result.data.status === 202) {
+          toast(result.data.message);
+          return;
+        }
       }
-      if (result.data.status === 201) {
-        toast(result.data.data);
-        return;
-      }
-      if (result.data.status === 202) {
-        toast(result.data.message);
-        return;
-      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Vui Lòng Điền Đủ Thông Tin",
+        text: ``,
+      });
     }
   };
 
+  function checkForm() {
+    if (selected.length > 0 && selected.length < 6) {
+      if (selected.length > 2) {
+        return true;
+      }
+      return false;
+    } else return false;
+  }
+
   return (
     <>
-      <div>
+      <div className="bg-white w-full flex justify-center items-center">
         <ToastContainer />
 
-        <div className="h-full w-full justify-center items-center">
-          <span className="m-2 -mt-2">
-            Tên Môn Học Phần:{" "}
-            <span className="text-blue-500">{courses[0]?.name}</span>
-          </span>
-          <div className="my-2 flex justify-center items-center ">
-            <span
-              onClick={(e) => setPrivate(!viewprivate)}
-              className="text-4xl p-1 mr-1 "
-            >
-              {viewprivate ? (
-                <>
-                  <FaLock className="text-blue-700" />
-                </>
-              ) : (
-                <>
-                  <FaLockOpen className="text-pink-700" />
-                </>
-              )}
-            </span>
-            <input
-              type="text"
-              className="h-10 w-full bg-primary border text-lg text-blue-400"
-              placeholder="Tiêu Đề Bài Viết"
-              value={otitle}
-              onChange={(e) => setoTitle(e.target.value)}
-            />
-            <input
-              type="text"
-              className="h-10 w-full bg-primary border text-lg text-blue-400 uppercase"
-              placeholder="Mã Học Phần"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
-            />
+        <div className="h-full w-[95%] bg-gray-200 p-5 flex justify-center items-center">
+          <div className="w-full justify-center items-center">
+            <div className="w-full h-full">
+              <div class="grid grid-cols-3 gap-4 my-2">
+                <div class="col-span-2 w-full h-10  ">
+                  <input
+                    type="text"
+                    className="h-10 w-full bg-white border text-lg text-blue-400"
+                    placeholder="Tiêu Đề Bài Viết"
+                    value={otitle}
+                    onChange={(e) => setoTitle(e.target.value)}
+                  />
+                </div>
+                <div class="w-full  ">
+                  <div className=" h-full  w-full">
+                    <div className="flex gap-1 h-full    rounded-md justify-center items-center">
+                      <div
+                        className={`${
+                          isP ? "bg-gray-300" : "bg-green-400"
+                        } cursor-pointer w-full h-full flex justify-center border-md  border-blue-400  items-center px-4 py-2  text-purple-700  border-none rounded-md duration-100 ease-in-out focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40`}
+                      >
+                        <span>Xoá</span>
+                      </div>
+                      <button
+                        // onClick={handlePublish}
+                        onClick={handleSubmit}
+                        className="md:w-full h-10 rounded-lg justify-center items-center 
+                                  flex ml-2 py-2.5 px-3  text-sm font-medium text-white
+                               bg-blue-700 border border-blue-700 hover:bg-blue-800 focus:ring-4 
+                               focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+                                dark:focus:ring-blue-800"
+                      >
+                        Đăng Tải Bài Viết
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full h-[56px]  ">
+                  <div className=" h-full  w-full">
+                    <div className="flex gap-1 h-full  bg-white  rounded-md justify-center items-center">
+                      <div
+                        onClick={(e) => setisP(!isP)}
+                        className={`${
+                          isP ? "bg-gray-300" : "bg-green-400"
+                        } cursor-pointer w-full h-full flex justify-center border-md  border-blue-400  items-center px-4 py-2  text-purple-700  border-none rounded-md duration-100 ease-in-out focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40`}
+                      >
+                        <span>Công khai</span>
+                      </div>
+                      <div
+                        onClick={(e) => setisP(!isP)}
+                        className={`${
+                          !isP ? "bg-gray-300" : "bg-green-400"
+                        } cursor-pointer flex justify-center  border-md border-blue-400  items-center w-full h-full  px-4 py-2  text-purple-700  border-none rounded-md duration-100 ease-in-out focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40`}
+                      >
+                        <span>Riêng tư</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-span-2 w-full h-full bg-green-400">
+                  <TagsInput
+                    value={selected}
+                    onChange={setSelected}
+                    name="tag"
+                    id="tag"
+                    placeHolder="Gắn thẻ bài viết của bạn. Tối đa 5 thẻ. Ít nhất 3 thẻ!"
+                    classNames={` w-full border-0 h-auto`}
+                  />
+                </div>
+              </div>
+            </div>
 
-            <button
-              // onClick={handlePublish}
-              onClick={handleSubmit}
-              className="md:w-14 h-14 rounded-lg justify-center items-center 
-                                    flex ml-2 py-2.5 px-3  text-sm font-medium text-white
-                                 bg-blue-700 border border-blue-700 hover:bg-blue-800 focus:ring-4 
-                                 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
-                                  dark:focus:ring-blue-800"
-            >
-              Post
-            </button>
-          </div>
-          <div>
-            {" "}
-            <MDEditor
-              className="h-full bg-primary"
-              height={800}
-              value={value}
-              // onChange={(e) => setValue(e.target.value)}
-              onChange={setValue}
-            />
+            <div>
+              {" "}
+              <div data-color-mode="light">
+                <MDEditor
+                  className="h-full bg-white"
+                  height={800}
+                  value={value}
+                  // onChange={(e) => setValue(e.target.value)}
+                  onChange={setValue}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

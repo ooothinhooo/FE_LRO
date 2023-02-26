@@ -32,10 +32,6 @@ function Header() {
       setIsOpen(2);
     } else if (href.includes("baiviet")) {
       setIsOpen(3);
-    } else if (href.includes("blogs")) {
-      setIsOpen(4);
-    } else if (href.includes("thaoluan")) {
-      setIsOpen(5);
     } else {
       setIsOpen(1);
     }
@@ -111,17 +107,6 @@ function Header() {
                         }  px-3 py-2 rounded-md text-sm font-medium`}
                       >
                         Bài Viết
-                      </Link>
-                      <Link
-                        onClick={() => setIsOpen(1)}
-                        to="/"
-                        className={`${
-                          isOpen === 4
-                            ? "bg-primary text-white"
-                            : "text-black hover:bg-primary hover:text-white"
-                        }  px-3 py-2 rounded-md text-sm font-medium`}
-                      >
-                        Hỏi Đáp
                       </Link>
 
                       {/* {navigation.map((item) => (

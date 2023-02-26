@@ -13,14 +13,12 @@ export { default as CardTL } from "./TaiLieu/CardTL.jsx";
 export { default as CreateFormBV } from "./BaiViet/CreateFormBV.jsx";
 export { default as UpdateFormBV } from "./BaiViet/UpdateFormBV.jsx";
 export { default as CardBV } from "./BaiViet/CardBV.jsx";
-//Blog
-export {default as CreateFormBlog} from "./Blogs/CreateFormBlog.jsx" 
-export { default as UpdateFormBlog } from "./Blogs/UpdateFormBlog.jsx"; 
+
 
 //! Contet Managements
 export { default as ManagementTL } from "./ContentManagement/ManagementTL.jsx";
 export { default as ManagementBV } from "./ContentManagement/ManagementBV.jsx";
-export { default as ManagementBlogs } from "./ContentManagement/ManagentmentBlogs.jsx";
+
 
 //! components
 export { default as Skenleton } from "./components/Skenleton.jsx";

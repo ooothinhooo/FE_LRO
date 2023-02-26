@@ -10,13 +10,6 @@ export { default as CreateBaiVietPage } from "./BaiViet/CreateBaiVietPage.jsx";
 export { default as UpdateBaiVietPage } from "./BaiViet/UpdateBaiVietPage.jsx";
 export { default as ViewBaiVietPage } from "./BaiViet/ViewBaiVietPage.jsx";
 
-//!Blogs
-export { default as BlogsPage } from "./Blogs/BlogsPage.jsx";
-export { default as CreateBlog } from "./Blogs/CreateBlog.jsx";
-export { default as ViewBlog } from "./Blogs/ViewBlog.jsx";
-export { default as UpdateBlog } from "./Blogs/UpdateBlog.jsx";
-//!Thảo Luận
-export { default as ThaoLuanPage } from "./ThaoLuan/ThaoLuanPage.jsx";
 
 //!Tài liệu
 export { default as TaiLieuPage } from "./TaiLieu/TaiLieuPage.jsx";

@@ -6,6 +6,7 @@ import {
   INTERACT_ART,
   REMOVE_ART,
   SETISPRIVATE_ART,
+  UPDATE_ART,
 } from "../art.api.js";
 
 export const FUNC_PAGE_ART = async (page) => {
@@ -72,5 +73,14 @@ export const FUNC_SET_IS_PRIVATE_ART = async (auth, _id) => {
     data: {
       _id: _id,
     },
+  });
+};
+
+export const FUNC_UPDATE_ART = async (auth, data) => {
+  return axios({
+    method: "post",
+    headers: { auth: auth },
+    url: UPDATE_ART,
+    data,
   });
 };
