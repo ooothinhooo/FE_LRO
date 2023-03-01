@@ -23,6 +23,7 @@ import {
   ViewBaiVietPage,
   ContentManagement,
   ProFile,
+  EditProfile,
 } from "./page/";
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
               <>
                 <Route path="/me/drafts/" element={<ContentManagement />} />
                 <Route path="/u/:id" element={<ProFile />} />
+                <Route path="/u/edit/:id" element={<EditProfile />} />
                 //* BaiVietPage
                 <Route
                   path="/baiviet"

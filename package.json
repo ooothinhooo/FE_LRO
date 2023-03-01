@@ -32,10 +32,12 @@
     "react-pdf-thumbnail": "^0.1.0",
     "react-router-dom": "^6.4.4",
     "react-scripts": "5.0.1",
+    "react-slideshow-image": "^4.2.1",
     "react-tag-input-component": "^2.0.2",
     "react-toastify": "^9.1.1",
     "socket.io-client": "^4.5.4",
     "sweetalert2": "^11.7.1",
+    "swiper": "^9.0.5",
     "tw-elements": "^1.0.0-alpha13",
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"

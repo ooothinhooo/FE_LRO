@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { BoxViewBV, BoxViewTL, Skenleton } from "../index.js";
 
@@ -11,8 +12,6 @@ function CardViewUser({ data }) {
       return <BoxViewTL data={data.docs} />;
     } else if (isMenu == 2) {
       return <BoxViewTL data={data.articles} />;
-    } else {
-      return <BoxViewTL data={data.disscussion} />;
     }
   }
   return (
@@ -39,13 +38,6 @@ function CardViewUser({ data }) {
                   </p>{" "}
                   <p class="text-gray-400">Bài Viết</p>{" "}
                 </div>{" "}
-                <div>
-                  {" "}
-                  <p class="font-bold text-gray-700 text-xl">
-                    {data?.disscussion?.length}
-                  </p>{" "}
-                  <p class="text-gray-400">Blogs</p>{" "}
-                </div>{" "}
               </div>{" "}
               <div class="relative">
                 {" "}
@@ -54,10 +46,11 @@ function CardViewUser({ data }) {
                 </div>{" "}
               </div>{" "}
               <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-                <button class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-                  {" "}
-                  Connect
-                </button>{" "}
+                <Link to={`/u/edit/${data._id}`}>
+                  <button class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                    Cập Nhật Hồ Sơ
+                  </button>
+                </Link>
                 <button class="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                   {" "}
                   Message
@@ -66,8 +59,8 @@ function CardViewUser({ data }) {
             </div>{" "}
             <div class="mt-20 text-center border-b pb-12">
               {" "}
-              <h1 class="text-4xl font-medium text-gray-700">
-                {data.username}
+              <h1 class="text-4xl font-extralight  text-gray-700">
+                {data.last_name + " " + data.first_name}
               </h1>{" "}
               <p class="font-light text-gray-600 mt-3">{data.email}</p>{" "}
               {/* <p class="mt-8 text-gray-500">
@@ -78,7 +71,7 @@ function CardViewUser({ data }) {
             <div class="mt-12 flex flex-col justify-center">
               <div>
                 {" "}
-                <div class="grid grid-cols-3 gap-5">
+                <div class="grid grid-cols-2 gap-5">
                   {" "}
                   <button
                     onClick={() => setIsMenu(1)}
@@ -132,32 +125,6 @@ function CardViewUser({ data }) {
                     </svg>{" "}
                     Bài Viết
                   </button>{" "}
-                  <button
-                    onClick={() => setIsMenu(3)}
-                    class={`${
-                      isMenu == 3
-                        ? "bg-indigo-500 text-white"
-                        : "bg-white text-indigo-500  "
-                    } p-4 rounded shadow-md flex items-center justify-center`}
-                  >
-                    {" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-6 w-6 mr-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      {" "}
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
-                      />{" "}
-                    </svg>{" "}
-                    Blogs
-                  </button>{" "}
                 </div>{" "}
                 <div
                   class={`${
@@ -173,13 +140,6 @@ function CardViewUser({ data }) {
                 >
                   {render()}
                 </div>{" "}
-                <div
-                  class={`${
-                    isMenu == 3 ? "block" : "hidden"
-                  } bg-blue-300 shadow-xl border border-gray-100 font-light p-8 rounded text-gray-500 bg-white mt-6`}
-                >
-                  {render()}
-                </div>
               </div>
             </div>
           </div>
