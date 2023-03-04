@@ -30,7 +30,11 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    photoURL: "",
+    avatar: "",
+    first_name: "",
+    last_name: "",
+    isSex: "",
+    phone: "",
   });
 
   const loginWithGoogle = async (e) => {
@@ -44,6 +48,10 @@ function Register() {
     form2.email = user?.email;
     form2.password = user?.email;
     form2.photoURL = user?.photoURL;
+    form2.first_name = user?.displayName.split(" ")[0];
+    form2.last_name = user?.displayName.split(" ").slice(1).join(" ");
+    form2.isSex = 3;
+    form2.phone = user?.uid;
     Func_Register();
   };
 
@@ -59,7 +67,10 @@ function Register() {
     form2.email = user?.email;
     form2.password = user?.email;
     form2.photoURL = user?.photoURL;
-
+    form2.first_name = user?.displayName.split(" ")[0];
+    form2.last_name = user?.displayName.split(" ").slice(1).join(" ");
+    form2.isSex = 3;
+    form2.phone = user?.uid;
     // console.table(form2);
     Func_Register();
   };
@@ -135,9 +146,9 @@ function Register() {
         // localStorage.setItem("user", JSON.stringify(result.data.data));
         toast("Register Successfully");
 
-        // setTimeout(() => {
-        //   navigation("/login");
-        // }, 2000);
+        setTimeout(() => {
+          navigation("/login");
+        }, 2000);
         return;
       }
       if (result.data.status === 201) {
@@ -286,8 +297,8 @@ function Register() {
           </div>
         </div>*/}
         </>
-        <div className="relative flex bg-gray-200 opacity-100 justify-center min-h-[90vh] items-center  overflow-hidden">
-          <div className="w-full m-auto  rounded-xs   lg:max-w-4xl">
+        <div className="relative flex bg-gray-200 opacity-100 justify-center min-h-[85vh]  lg:min-h-[90vh] items-center  overflow-hidden">
+          <div className="w-full m-auto  rounded-xs  md:max-w-5xl lg:max-w-4xl">
             <div class="grid grid-flow-row-dense grid-cols-3  ">
               <div className=" w-full z-50  ml-4 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
                 <div className="relative flex flex-col justify-center h-full overflow-hidden">
@@ -328,6 +339,45 @@ function Register() {
                         Sign Up
                       </h1>
                       <div className="mt-6">
+                        <div class="grid gap-4 grid-cols-2 mb-2">
+                          <div className="w-full">
+                            <label
+                              for="email"
+                              className="block text-sm font-semibold text-gray-800"
+                            >
+                              Họ
+                            </label>
+                            <input
+                              type="text"
+                              id="username"
+                              onChange={handleChange}
+                              name="first_name"
+                              // placeholder="first_name"
+                              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+
+                              // className="block w-full border-2 border-white border-b-indigo-500 px-4 py-2 mt-2 text-purple-700 bg-white  rounded "
+                            />
+                          </div>
+
+                          <div className="w-full">
+                            <label
+                              for="email"
+                              className="block text-sm font-semibold text-gray-800"
+                            >
+                              Tên
+                            </label>
+                            <input
+                              type="text"
+                              // id="username"
+                              onChange={handleChange}
+                              name="last_name"
+                              // placeholder="last_name"
+                              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+
+                              // className="block w-full border-2 border-white border-b-indigo-500 px-4 py-2 mt-2 text-purple-700 bg-white  rounded "
+                            />
+                          </div>
+                        </div>
                         <div className="mb-2">
                           <label
                             for="email"
@@ -340,7 +390,10 @@ function Register() {
                             id="username"
                             onChange={handleChange}
                             name="username"
+                            // placeholder="User Name"
                             className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+
+                            // className="block w-full border-2 border-white border-b-indigo-500 px-4 py-2 mt-2 text-purple-700 bg-white  rounded "
                           />
                         </div>
                         <div className="mb-2">

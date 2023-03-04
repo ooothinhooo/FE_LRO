@@ -3,14 +3,17 @@ import { ProductContext } from "../contexts/ProductContextProvider.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
-import { Header } from "../components/index.js";
+import { FileInput, Header, Login } from "../components/index.js";
 import {
+  FUNC_LOGIN,
   FUNC_UPDATE_PROFILE_USER,
   FUNC_VIEW_PROFILE_USER,
 } from "../service/index.js";
 // import Swal from "sweetalert2";
 import Swal from "sweetalert2";
-import { login } from "../service/Account/Login.js";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase.js";
+import ChangeAvtUser from "../components/ViewProFile/ChangeAvtUser.jsx";
 
 function EditProfilePage() {
   const { id } = useParams();
@@ -19,15 +22,14 @@ function EditProfilePage() {
   const [dataUser, setDataUser] = useState([]);
   const [first_name, setFirstName] = useState(dataUser?.first_name);
   const [last_name, setLastName] = useState(dataUser?.last_name);
-  const [userName, setUserName] = useState(dataUser?.username);
   const [email, setEmail] = useState(dataUser?.email);
   const [phone, setPhone] = useState(dataUser?.phone);
   const [avatar, setAvatar] = useState(dataUser?.avatar);
   const [isSex, setIsSex] = useState(dataUser?.isSex);
+  const [Submit, setSubmit] = useState(Boolean(false));
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
-    username: "",
     email: "",
     phone: "",
     avatar: "",
@@ -37,7 +39,6 @@ function EditProfilePage() {
   const [Form, setForm] = useState({
     first_name: "",
     last_name: "",
-    username: "",
     email: "",
     phone: "",
     avatar: "",
@@ -55,11 +56,13 @@ function EditProfilePage() {
       setEmail(re.email);
       setPhone(re.phone);
       setAvatar(re.avatar);
-      setUserName(re.username);
       setIsSex(re.isSex);
     } catch (error) {}
   };
-
+  const handleInputState = (name, value) => {
+    // setForm((prev) => ({ ...prev, [name]: value }));
+    setAvatar(value);
+  };
   const isFormEmpty = () => {
     return Object.values(Form).some((x) => x === "" || x === null);
   };
@@ -68,22 +71,20 @@ function EditProfilePage() {
     e.preventDefault();
     try {
       if (!isFormEmpty()) {
-        console.log(first_name);
+        console.log(Form);
         const result = await FUNC_UPDATE_PROFILE_USER(auth, Form);
         console.log(result);
         if (result.status == 200) {
           if (result.data.status == 200) {
-            setTimeout(() => {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: result.data.message,
-                showConfirmButton: false,
-                timer: 1500,
-              });
-
-              CallAPI();
-            }, 3000);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: `Xác Nhận Cập Nhật Thông Tin`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            localStorage.clear();
+            window.location = "/login";
           }
         } else {
           Swal.fire({
@@ -105,12 +106,33 @@ function EditProfilePage() {
       }
     } catch (error) {}
   };
-
-  const handleUploadImg = (e) => {
+  const uploadImage = (e) => {
     e.preventDefault();
-
     try {
-      setAvatar("https://i.ibb.co/8Njg8WS/meme1.jpg");
+      const imageFile = e.target.files[0];
+      // console.log(imageFile);
+      const fileName = new Date().getTime() + imageFile.name;
+
+      const storageRef = ref(
+        storage,
+        `avt/${fileName.split("").join("").toUpperCase()}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const uploadProgress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        },
+        (error) => {},
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setAvatar(downloadURL);
+            console.log(downloadURL);
+          });
+        }
+      );
     } catch (error) {}
   };
 
@@ -124,20 +146,20 @@ function EditProfilePage() {
     setForm({
       first_name: first_name,
       last_name: last_name,
-      username: userName,
       email: email,
       phone: phone,
       avatar: avatar,
       isSex: isSex,
     });
-  }, [dataUser]);
+    console.table(Form);
+  }, [dataUser, first_name, last_name, email, phone, avatar, isSex]);
   return (
     <>
       <div>
         <Header />
       </div>
       <div className="w-full h-[90vh] bg-white flex justify-center items-center">
-        <div className="w-[80%] h-full ">
+        <div className="w-[80%] h-full  ">
           <div className="w-full h-[90%] border-2 bg-blue-300 border-green-400 shadow-xl shadow-pink-300/30 rounded-3xl">
             <div class="w-full h-full grid grid-cols-3 gap-4">
               <div class="w-full h-full flex justify-center items-center ">
@@ -249,26 +271,6 @@ function EditProfilePage() {
                         <div class="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 px-3 py-2 shadow-sm focus-within:shadow-inner">
                           <input
                             type="text"
-                            name="username"
-                            id="user-name"
-                            // onChange={handleChange}
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            class="peer block w-full border-0 p-0 text-base text-gray-900 placeholder-gray-400 focus:ring-0"
-                            placeholder="Username"
-                          />
-                          <label
-                            html="company"
-                            class="block transform text-xs font-bold uppercase text-gray-400 transition-opacity, duration-200 peer-placeholder-shown:h-0 peer-placeholder-shown:-translate-y-full peer-placeholder-shown:opacity-0"
-                          >
-                            User Name
-                          </label>
-                        </div>
-                      </div>
-                      <div class="block my-2">
-                        <div class="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 px-3 py-2 shadow-sm focus-within:shadow-inner">
-                          <input
-                            type="text"
                             name="email"
                             // onChange={handleChange}
                             value={email}
@@ -287,23 +289,31 @@ function EditProfilePage() {
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <div onClick={(e) => handleUploadImg(e)} class="block">
-                          <button
-                            type="submit"
+                        <div class="block">
+                          {/* <input
+                            type="file"
+                            name="upload"
+                            onChange={(e) => handleUploadImg(e)}
                             class="mt-4 bg-purple-500 text-white py-2 px-6 rounded-md hover:bg-purple-600 "
-                          >
-                            Cập Nhật Avatar
-                          </button>
-                        </div>
-                        <div onClick={(e) => handleUpdate(e)} class="block ">
-                          <button
-                            // type="submit"
+                          /> */}
+
+                          <input
+                            type="file"
+                            name="upload-image"
+                            accept="image/*"
+                            onChange={uploadImage}
                             class="mt-4 bg-purple-500 text-white py-2 px-6 rounded-md hover:bg-purple-600 "
-                          >
-                            Update
-                          </button>
+                          />
                         </div>
                       </div>
+                    </div>
+                    <div onClick={(e) => handleUpdate(e)} class="block ">
+                      <button
+                        // type="submit"
+                        class="mt-4 bg-purple-500 text-white py-2 px-6 rounded-md hover:bg-purple-600 "
+                      >
+                        Update
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -312,6 +322,9 @@ function EditProfilePage() {
           </div>
         </div>
       </div>
+      {/* <div>
+        <Login />
+      </div> */}
     </>
   );
 }

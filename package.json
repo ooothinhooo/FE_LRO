@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.20.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@material-tailwind/react": "^1.2.4",
-    "@mui/material": "^5.0.1",
+    "@mui/material": "^5.11.11",
     "@mui/styles": "^5.0.1",
     "@mui/system": "^5.0.1",
     "@pdftron/webviewer": "^8.0.0",

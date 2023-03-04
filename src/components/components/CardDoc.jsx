@@ -95,9 +95,11 @@ function CardDoc() {
                                           alt="avatar"
                                           className="w-6 h-6 rounded-full mr-2 "
                                         />
-                                        <h1 className="text-[15px] text-blue-900  hover:text-blue-400  cursor-pointer">
-                                          {item?.creatorsName}
-                                        </h1>
+                                        <Link to={`/u/${item?.userId}`}>
+                                          <h1 className="text-[15px] text-blue-900  hover:text-blue-400  cursor-pointer">
+                                            {item?.creatorsName}
+                                          </h1>
+                                        </Link>
                                       </div>
                                       <iframe
                                         class="w-full  rounded shadow cursor-grabbing overflow-hidden  "
