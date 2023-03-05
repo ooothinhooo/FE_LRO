@@ -9,6 +9,7 @@ import { FileInput } from "../../components";
 import { TagsInput } from "react-tag-input-component";
 import { FUNC_CREATE_DOC } from "../../service/FuncDoc/index.js";
 import Swal from "sweetalert2";
+import { CategoryArr } from "../../data/CategoryDoc.js";
 
 function DocForm() {
   const { user } = useContext(ProductContext);
@@ -237,10 +238,9 @@ function DocForm() {
                       className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     >
                       <option selected>Chọn một danh mục</option>
-                      <option value="US">United States</option>
-                      <option value="CA">Canada</option>
-                      <option value="FR">France</option>
-                      <option value="DE">Germany</option>
+                      {CategoryArr.map((i) => {
+                        return <option value={i.value}>{i.name}</option>;
+                      })}
                     </select>
                   </div>
                 </div>

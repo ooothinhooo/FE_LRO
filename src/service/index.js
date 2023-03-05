@@ -51,7 +51,7 @@ export const FUNC_CHANGE_PASS_USER = async (auth,password) => {
 export const FUNC_SEARCH_DATA = async (q) => {
   return axios({
     method: "post",
-    url: `http://localhost:8080/api/search/`,
+    url: `${API_URL}/api/search/`,
     params: { q: q },
   });
 };
