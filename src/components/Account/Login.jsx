@@ -133,7 +133,7 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(result.data.data));
 
         setTimeout(() => {
-          navigation("/");
+          // navigation("/");
           window.location.reload();
         }, 2000);
         return;

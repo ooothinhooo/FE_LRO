@@ -44,8 +44,8 @@ function HighLightDoc() {
   const getPagination = async () => {
     try {
       const data = await FUNC_HIGHT_LIGHT_DOC(page);
-      setDocsData(data.data.data);
-      console.log(data.data.data);
+      setDocsData(data.data);
+      // console.log(data.data.data);
     } catch (error) {}
   };
 
@@ -69,7 +69,7 @@ function HighLightDoc() {
 
   const handlerView = async (id) => {};
 
-  console.log(DocsData);
+  // console.log(DocsData);
   return (
     <>
       <div className="w-full  justify-center items-center ">

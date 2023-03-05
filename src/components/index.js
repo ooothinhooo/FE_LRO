@@ -34,3 +34,7 @@ export { default as HighLightDoc } from "./components/HighLightDoc.jsx";
 //! ViewProFile
 export { default as BoxViewBV } from "./ViewProFile/BoxViewBV.jsx";
 export { default as BoxViewTL } from "./ViewProFile/BoxViewTL.jsx";
+
+//search
+
+export {default as InputSearch } from "./Search/InputSearch.jsx"
