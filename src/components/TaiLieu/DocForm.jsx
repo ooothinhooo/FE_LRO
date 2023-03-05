@@ -58,7 +58,7 @@ function DocForm() {
             category: "",
             content: "",
             docs_URL: "",
-            creatorsName: user.first_name + user.last_name,
+            creatorsName: user.first_name + " " + user.last_name,
             creatorsId: user.userId,
             creatorsPhoto: user.avatar,
             isPrivate: "",

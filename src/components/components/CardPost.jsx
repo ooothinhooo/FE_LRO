@@ -49,7 +49,7 @@ function CardPost() {
 
   const nextPage = () => {
     console.log("NEXT PAGE = " + page);
-    const pg = page <= Math.ceil(ArtsData.length / 10) ? page + 1 : 1;
+    const pg = page <= Math.ceil(ArtsData.length / 12) ? page + 1 : 1;
     setPage(pg);
     // getPagination();
   };

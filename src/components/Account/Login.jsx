@@ -20,135 +20,136 @@ import { login } from "../../service/Account/Login.js";
 import "flowbite";
 import { async } from "@firebase/util";
 function Login() {
-const navigation = useNavigate();
-const firebaseAuth = getAuth(app);
-const [errors, setErorrs] = useState(null);
-const [form, setForm] = useState({
-username: "",
+  const navigation = useNavigate();
+  const firebaseAuth = getAuth(app);
+  const [errors, setErorrs] = useState(null);
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+  // console.log(form);
+  const [form2, setForm2] = useState({
+    form: "",
+    username: "",
+    email: "",
+    password: "",
+    avatar: "",
+  });
 
-password: "",
-});
-// console.log(form);
-const [form2, setForm2] = useState({
-form: "",
-username: "",
-email: "",
-password: "",
-avatar: "",
-});
+  //* func
 
-//* func
+  const loginWithGoogle = async (e) => {
+    const provider = new GoogleAuthProvider();
+    const { user } = await signInWithPopup(firebaseAuth, provider);
+    // const { refreshToken, providerData } = user;
+    // setForm2
+    form2.form = "google";
+    form2.username = user?.displayName;
+    form2.email = user?.email;
+    form2.password = user?.email;
+    form2.avatar = user?.photoURL;
+    Func_Register();
+    // Func_Login();
+  };
 
-const loginWithGoogle = async (e) => {
-const provider = new GoogleAuthProvider();
-const { user } = await signInWithPopup(firebaseAuth, provider);
-// const { refreshToken, providerData } = user;
-// setForm2
-form2.form = "google";
-form2.username = user?.displayName;
-form2.email = user?.email;
-form2.password = user?.email;
-form2.avatar = user?.photoURL;
-Func_Register();
-// Func_Login();
-};
+  const loginWithFacebook = async (e) => {
+    const provider = new FacebookAuthProvider();
+    const { user } = await signInWithPopup(firebaseAuth, provider);
+    // const { refreshToken, providerData } = user;
+    // setForm2
+    console.log(user);
+    form2.form = "facebook";
+    form2.uid = user?.uid;
+    form2.username = user?.displayName;
+    form2.email = user?.email;
+    form2.password = user?.email;
+    form2.avatar = user?.photoURL;
 
-const loginWithFacebook = async (e) => {
-const provider = new FacebookAuthProvider();
-const { user } = await signInWithPopup(firebaseAuth, provider);
-// const { refreshToken, providerData } = user;
-// setForm2
-console.log(user);
-form2.form = "facebook";
-form2.uid = user?.uid;
-form2.username = user?.displayName;
-form2.email = user?.email;
-form2.password = user?.email;
-form2.photoURL = user?.photoURL;
+    // console.table(form2);
+    Func_Register();
+    // Func_Login();
+  };
 
-// console.table(form2);
-Func_Register();
-// Func_Login();
-};
+  const Func_Login = async () => {
+    // console.log("Login run");
+    const resultLogin = await login(form2);
+    // console.log(resultLogin);
+    if (resultLogin.status == 200) {
+      if (resultLogin.data.status === 200) {
+        toast(resultLogin.data.message);
+        // toast("Vui Lòng Chờ");
+        // console.log(result);
+        localStorage.setItem("user", JSON.stringify(resultLogin.data.data));
+        setTimeout(() => {
+          // navigation("/");
+          window.location = "/";
+        }, 2000);
+        return;
+      }
+      if (resultLogin.data.status === 201) {
+        // setErorrs(resultLogin.data.data);
+        toast(resultLogin.data.data);
+        return;
+      }
 
-const Func_Login = async () => {
-// console.log("Login run");
-const resultLogin = await login(form2);
-// console.log(resultLogin);
-if (resultLogin.status == 200) {
-if (resultLogin.data.status === 200) {
-toast(resultLogin.data.message);
-// toast("Vui Lòng Chờ");
-// console.log(result);
-localStorage.setItem("user", JSON.stringify(resultLogin.data.data));
-setTimeout(() => {
-// navigation("/");
-window.location = "/";
-}, 2000);
-return;
-}
-if (resultLogin.data.status === 201) {
-// setErorrs(resultLogin.data.data);
-toast(resultLogin.data.data);
-return;
-}
+      if (resultLogin.data.status === 202) {
+        toast(resultLogin.data.message);
+        return;
+      }
+    }
+    // console.warn(errors);
+  };
+  const Func_Register = async () => {
+    const result = await register(form2);
+    if (result.status == 200) {
+      if (result.data.status === 200) {
+        Func_Login();
+        return;
+      }
+      if (result.data.status === 201) {
+        return;
+      }
+      if (result.data.status === 202) {
+        Func_Login();
+        return;
+      }
+    }
+  };
+  // setForm data
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-if (resultLogin.data.status === 202) {
-toast(resultLogin.data.message);
-return;
-}
-}
-// console.warn(errors);
-};
-const Func_Register = async () => {
-const result = await register(form2);
-if (result.status == 200) {
-if (result.data.status === 200) {
-Func_Login();
-return;
-}
-if (result.data.status === 201) {
-return;
-}
-if (result.data.status === 202) {
-Func_Login();
-return;
-}
-}
-};
-// setForm data
-const handleChange = (e) => {
-setForm({ ...form, [e.target.name]: e.target.value });
-};
+  const handleSubmit = async (e) => {
+    const result = await login(form);
+    if (result.status == 200) {
+      if (result.data.status === 200) {
+        toast(result.data.message);
+        toast("Vui Lòng Chờ");
+        // console.log(result);
+        localStorage.setItem("user", JSON.stringify(result.data.data));
 
-const handleSubmit = async (e) => {
-const result = await login(form);
-if (result.status == 200) {
-if (result.data.status === 200) {
-toast(result.data.message);
-toast("Vui Lòng Chờ");
-// console.log(result);
-localStorage.setItem("user", JSON.stringify(result.data.data));
+        setTimeout(() => {
+          navigation("/");
+          window.location.reload();
+        }, 2000);
+        return;
+      }
+      if (result.data.status === 201) {
+        setErorrs(result.data.data);
+        toast(result.data.data);
+        return;
+      }
 
-setTimeout(() => {
-navigation("/");
-window.location.reload();
-}, 2000);
-return;
-}
-if (result.data.status === 201) {
-setErorrs(result.data.data);
-toast(result.data.data);
-return;
-}
-
-if (result.data.status === 202) {
-toast(result.data.message);
-return;
-}
-}
-};
-
+      if (result.data.status === 202) {
+        toast(result.data.message);
+        return;
+      }
+    }
+  };
 return (
 <>
   <ToastContainer />

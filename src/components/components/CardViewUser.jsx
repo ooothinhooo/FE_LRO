@@ -10,7 +10,7 @@ import { FUNC_CHANGE_PASS_USER } from "../../service/index.js";
 function CardViewUser({ data }) {
   const { user } = useContext(ProductContext);
   let auth = user?.token;
-  const [isMenu, setIsMenu] = useState(2);
+  const [isMenu, setIsMenu] = useState(1);
   const [isPass, setIsPass] = useState();
   const [isConfirmPass, setIsConfirmPass] = useState();
   const [back, setBack] = useState(Boolean(false));
@@ -95,16 +95,16 @@ function CardViewUser({ data }) {
                 </div>{" "}
                 <div class="relative">
                   {" "}
-                  <div class="w-48 h-48  mx-auto rounded-full absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                    <img src={data.avatar} alt="" />
+                  <div class="w-44 h-44  mx-auto rounded-full absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+                    <img className="h-full w-full" src={data.avatar} alt="" />
                   </div>{" "}
                 </div>{" "}
-                <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-                  <span
-                    className={`${
-                      user?.userId != data._id ? "hidden" : "block"
-                    } `}
-                  >
+                <div
+                  class={`${
+                    user?.userId != data._id ? "hidden" : "block"
+                  }  space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center`}
+                >
+                  <span className={``}>
                     <Link to={`/u/edit/${data._id}`}>
                       <button class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                         Cập Nhật Hồ Sơ
@@ -123,7 +123,7 @@ function CardViewUser({ data }) {
               <div class="mt-20 text-center border-b pb-12">
                 {" "}
                 <h1 class="text-4xl font-extralight  text-gray-700">
-                  {data.last_name + " " + data.first_name}
+                  {data.first_name + " " + data.last_name}
                 </h1>{" "}
                 <p class="font-light text-gray-600 mt-3">{data.email}</p>{" "}
                 {/* <p class="mt-8 text-gray-500">

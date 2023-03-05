@@ -1,8 +1,14 @@
-import { FIND_ONE_DOC, GET_DOC_LIST, PAGE_DOCS } from "../apiConstant.js";
+import {
+  DOCS_HIGHT,
+  FIND_ONE_DOC,
+  GET_DOC_LIST,
+  PAGE_DOCS,
+} from "../apiConstant.js";
 import axios from "axios";
 import {
   CREATE_DOC,
   DOCS_LIST,
+  HIGHT_LIGHT_DOC,
   INTERACT_DOC,
   REMOVE_DOC,
   SETISPRIVATE_DOC,
@@ -13,6 +19,14 @@ export const FUNC_PAGE_DOCS = async (page) => {
   return axios({
     method: "get",
     url: PAGE_DOCS,
+    params: { page: page },
+  });
+};
+
+export const FUNC_HIGHT_LIGHT_DOC = async (page) => {
+  return axios({
+    method: "get",
+    url: DOCS_HIGHT,
     params: { page: page },
   });
 };
@@ -49,7 +63,7 @@ export const FUNC_COUNT_VIEW_DOC = async (auth, _id) => {
   return axios({
     method: "post",
     headers: { auth: auth },
-    url: "http://localhost:8080/apidocs/viewdoc",
+    url: VIEW_DOC,
     // id,
     data: {
       _id: _id,

@@ -30,7 +30,7 @@ function BoxViewTL({ data }) {
             data != "" &&
             data?.map((item) => {
               return (
-                <>
+                <div className={`${item?.isPrivate ? "hidden" : ""}`}>
                   <div className="w-full  inline-block relative py-1  justify-center items-center">
                     <div class="hidden md:flex absolute inset-0 text-white justify-start items-center">
                       <svg height="91%" viewBox="0 0 50 100">
@@ -43,17 +43,6 @@ function BoxViewTL({ data }) {
                     <div className="bg-[#f8f9fa] justify-end  w-full md:w-[92%] p-2 md:ml-10  z-[100] ">
                       <div className="flex justify-between  ">
                         <div className="flex justify-start items-center">
-                          <p className="text-2xl mx-2">
-                            {item?.isPrivate ? (
-                              <>
-                                <FaLock className="text-red-400" />
-                              </>
-                            ) : (
-                              <>
-                                <FaLockOpen className="text-green-400" />
-                              </>
-                            )}
-                          </p>
                           <p className="text-md md:text-lg text-blue-400  font-extrabold">
                             {item?.title}
                           </p>
@@ -106,7 +95,7 @@ function BoxViewTL({ data }) {
                       </div>
                     </div>
                   </div>
-                </>
+                </div>
               );
             })}
           {/* <div className="my-3 w-full   flex justify-center items-center ">
