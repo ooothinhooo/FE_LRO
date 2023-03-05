@@ -2,10 +2,9 @@ import { arrayRemove } from "firebase/firestore";
 import React, { useRef, useEffect } from "react";
 import CardDoc from "../components/components/CardDoc.jsx";
 import CardPost from "../components/components/CardPost.jsx";
-import { Footer, Header, Login } from "../components/index.js";
+import { Footer, Header, HighLightDoc, Login } from "../components/index.js";
 
 function Home() {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
   return (
     <div>
       <Header />
@@ -30,7 +29,8 @@ function Home() {
 
       <div className=" w-full flex justify-center items-center bg-white">
         <div className="w-[90%] py-5 px-4 bg-gray-100 flex justify-center items-center -mt-[50px] ">
-          <CardDoc />
+          {/* <CardDoc /> */}
+          <HighLightDoc />
         </div>
       </div>
 

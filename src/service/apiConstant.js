@@ -11,8 +11,8 @@ export const FIND_ONE_ART = `${API_URL}/api/findoneart`;
 export const PAGE_DOCS = `${API_URL}/api/pagedocs`;
 export const PAGE_ARTS = `${API_URL}/api/pagearts`;
 
-// export const DOCS_HIGHT = `${API_URL}/api/docshight`;
-// export const ART_HIGHT = `${API_URL}/api/arthight`;
+export const DOCS_HIGHT = `${API_URL}/api/docshight`;
+export const ART_HIGHT = `${API_URL}/api/arthight`;
 
 // const API_URL = "http://localhost:8080";
 console.log(API_URL);

@@ -4,12 +4,13 @@ import { FiEye } from "react-icons/fi";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FaDownload, FaRegCommentDots } from "react-icons/fa";
 import {
+  FUNC_HIGHT_LIGHT_DOC,
   FUNC_INTERACT_DOC,
   FUNC_PAGE_DOCS,
 } from "../../service/FuncDoc/index.js";
 import Skenleton from "./Skenleton.jsx";
 import { Link } from "react-router-dom";
-function CardDoc() {
+function HighLightDoc() {
   const { user } = useContext(ProductContext);
   const [page, setPage] = useState(Number(1));
   const [DocsData, setDocsData] = useState([]);
@@ -42,8 +43,9 @@ function CardDoc() {
 
   const getPagination = async () => {
     try {
-      const { data } = await FUNC_PAGE_DOCS(page);
-      setDocsData(data);
+      const data = await FUNC_HIGHT_LIGHT_DOC(page);
+      setDocsData(data.data);
+      // console.log(data.data.data);
     } catch (error) {}
   };
 
@@ -67,7 +69,7 @@ function CardDoc() {
 
   const handlerView = async (id) => {};
 
-  console.log(DocsData);
+  // console.log(DocsData);
   return (
     <>
       <div className="w-full  justify-center items-center ">
@@ -81,9 +83,9 @@ function CardDoc() {
                       <div className="w-[88%] py-5 px-4 bg-gray-100 flex justify-center items-center ">
                         <div class="grid grid-cols-4 gap-6">
                           {DocsData &&
-                            DocsData.map((item, index) => {
+                            DocsData?.map((item, index) => {
                               return (
-                                <div>
+                                <div key={index}>
                                   <div
                                     key={item?._id}
                                     class="w-[266px] h-[333px] flex items-center justify-center bg-gray-100 rounded-md  hover:bg-blue-400 ease-in-out duration-100 "
@@ -106,18 +108,18 @@ function CardDoc() {
                                         src={item?.docs_URL}
                                         title="W3Schools Free Online Web Tutorials"
                                         frameborder="0"
-                                        scrolling="0"
                                       ></iframe>
                                       <Link to={`/tailieu/view/${item?._id}`}>
                                         <h3 class="text-gray-900 hover:text-blue-500 cursor-pointer font-serif m-1 py-1 ">
-                                          {item?.title.substring(0, 27) + "..."}
+                                          {item?.title?.substring(0, 27) +
+                                            "..."}
                                         </h3>
                                       </Link>
                                       <p class="text-gray-800 font-light mt-1 text-xs">
                                         {/* {item?.content.substring(0, 60) + "..."} */}
                                       </p>
                                       <p className="text-xs text-blue-800 w-full h-8 ">
-                                        {item?.tag.slice(0, 3).map((i) => {
+                                        {item?.tag?.slice(0, 3).map((i) => {
                                           return (
                                             <>
                                               <span className="mx-1 p-1 bg-pink-200 rounded-md font-thin">
@@ -137,20 +139,13 @@ function CardDoc() {
                                           </span>
 
                                           <span className="text-md flex justify-center items-center ">
-                                            {/* <span
-                                  onClick={(e) => handlerLike(item?._id)}
-                                  className="text-md flex justify-center items-center mx-1"
-                                >
-                                  <span>{item?.like.length}</span>
-                                  <BsFillHeartFill className="text-lg mx-1 text-" />
-                                </span> */}
                                             <div
                                               onClick={(e) => {
                                                 handlerLike(item?._id);
                                               }}
-                                              class="flex  text-gray-700 text-sm  z-50  cursor-pointer"
+                                              class="flex  text-gray-700 text-md  z-50  cursor-pointer"
                                             >
-                                              <span>{item?.like.length}</span>
+                                              <span>{item?.like?.length}</span>
                                               <span className="mx-1">
                                                 {!item?.like?.includes(
                                                   photoURL
@@ -159,7 +154,7 @@ function CardDoc() {
                                                     <svg
                                                       fill="none"
                                                       viewBox="0 0 24 24"
-                                                      class="w-4 h-4 mr-1"
+                                                      class="w-5 h-5 mr-1"
                                                       stroke="currentColor"
                                                     >
                                                       <path
@@ -173,8 +168,9 @@ function CardDoc() {
                                                 ) : (
                                                   <>
                                                     <svg
-                                                      width="18px"
-                                                      height="18px"
+                                                      //   width="18px"
+                                                      //   height="18px"
+                                                      class="w-5 h-5 mr-1"
                                                       viewBox="0 0 24 24"
                                                       fill="none"
                                                       xmlns="http://www.w3.org/2000/svg"
@@ -416,4 +412,4 @@ function CardDoc() {
   );
 }
 
-export default CardDoc;
+export default HighLightDoc;

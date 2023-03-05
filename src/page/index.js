@@ -3,6 +3,8 @@ export { default as LoginPage } from "./LoginPage.jsx";
 export { default as RegisterPage } from "./RegisterPage.jsx";
 export { default as ProFile } from "./ProFile.jsx";
 export { default as ContentManagement } from "./ContentManagement.jsx";
+export { default as EditProfile } from "./EditProfilePage.jsx";
+export { default as SearchPage } from "./SearchPage.jsx";
 
 //!Bài Viết
 export { default as BaiVietPage } from "./BaiViet/BaiVietPage.jsx";

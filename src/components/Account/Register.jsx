@@ -3,7 +3,6 @@ import { register } from "../../service/Account/Register.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
-
 import {
   getAuth,
   signInWithPopup,
@@ -14,9 +13,11 @@ import {
 import { app } from "../../firebase.js";
 import { authentication } from "../../firebase.js";
 import { login } from "../../service/Account/Login.js";
-
+import Swal from "sweetalert2";
+import removeVietnameseAndWhitespace from "../../func/remove.class.js";
 function Register() {
   const navigation = useNavigate();
+
   const firebaseAuth = getAuth(app);
   const [errors, setErorrs] = useState(null);
   const [form, setForm] = useState({
@@ -30,7 +31,11 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    photoURL: "",
+    avatar: "",
+    first_name: "",
+    last_name: "",
+    isSex: "",
+    phone: "",
   });
 
   const loginWithGoogle = async (e) => {
@@ -38,28 +43,43 @@ function Register() {
     const { user } = await signInWithPopup(firebaseAuth, provider);
     // const { refreshToken, providerData } = user;
     // setForm2
+    const username = removeVietnameseAndWhitespace(
+      user?.displayName.toLocaleLowerCase()
+    );
     form2.form = "google";
     form2.uid = user?.uid;
-    form2.username = user?.displayName;
+    form2.username = username;
     form2.email = user?.email;
-    form2.password = user?.email;
-    form2.photoURL = user?.photoURL;
+    form2.password = username;
+    form2.avatar = user?.photoURL;
+    form2.first_name = user?.displayName.split(" ")[0];
+    form2.last_name = user?.displayName.split(" ").slice(1).join(" ");
+    form2.isSex = 3;
+    form2.phone = user?.uid;
+
     Func_Register();
   };
 
   const loginWithFacebook = async (e) => {
     const provider = new FacebookAuthProvider();
     const { user } = await signInWithPopup(firebaseAuth, provider);
+    const username = removeVietnameseAndWhitespace(
+      user?.displayName.toLocaleLowerCase()
+    );
+
     // const { refreshToken, providerData } = user;
     // setForm2
     console.log(user);
     form2.form = "facebook";
     form2.uid = user?.uid;
-    form2.username = user?.displayName;
+    form2.username = username;
     form2.email = user?.email;
-    form2.password = user?.email;
-    form2.photoURL = user?.photoURL;
-
+    form2.password = username;
+    form2.avatar = user?.photoURL;
+    form2.first_name = user?.displayName.split(" ")[0];
+    form2.last_name = user?.displayName.split(" ").slice(1).join(" ");
+    form2.isSex = 3;
+    form2.phone = user?.uid;
     // console.table(form2);
     Func_Register();
   };
@@ -75,7 +95,7 @@ function Register() {
         // console.log(result);
         localStorage.setItem("user", JSON.stringify(resultLogin.data.data));
         setTimeout(() => {
-          navigation("/");
+          window.location.href = "/";
         }, 2000);
         return;
       }
@@ -100,10 +120,32 @@ function Register() {
       if (result.data.status === 200) {
         console.log(result.data);
         // localStorage.setItem("user", JSON.stringify(result.data.data));
-        toast("Register Successfully");
-        Func_Login();
-        // setTimeout(() => {
-        // }, 3000);
+        // toast("Register Successfully");
+        let timerInterval;
+        Swal.fire({
+          title: "Register Successfully",
+          html: "I will close in <b></b> milliseconds.",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const b = Swal.getHtmlContainer().querySelector("b");
+            timerInterval = setInterval(() => {
+              b.textContent = Swal.getTimerLeft();
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          },
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+          }
+        });
+        setTimeout(() => {
+          Func_Login();
+        }, 1000);
         return;
       }
       if (result.data.status === 201) {
@@ -135,9 +177,9 @@ function Register() {
         // localStorage.setItem("user", JSON.stringify(result.data.data));
         toast("Register Successfully");
 
-        // setTimeout(() => {
-        //   navigation("/login");
-        // }, 2000);
+        setTimeout(() => {
+          navigation("/login");
+        }, 2000);
         return;
       }
       if (result.data.status === 201) {
@@ -286,12 +328,12 @@ function Register() {
           </div>
         </div>*/}
         </>
-        <div className="relative flex bg-gray-200 opacity-100 justify-center min-h-[90vh] items-center  overflow-hidden">
-          <div className="w-full m-auto  rounded-xs   lg:max-w-4xl">
+        <div className="relative flex bg-gray-200 opacity-100 justify-center min-h-[80vh]  lg:min-h-[90vh] items-center  overflow-hidden">
+          <div className="w-full m-auto  rounded-xs  md:max-w-5xl lg:max-w-4xl">
             <div class="grid grid-flow-row-dense grid-cols-3  ">
               <div className=" w-full z-50  ml-4 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
                 <div className="relative flex flex-col justify-center h-full overflow-hidden">
-                  <div className="w-full h-full m-auto flex justify-center items-center  p-6 m-auto  bg-primary rounded-md shadow-xl lg:max-w-xl">
+                  <div className="w-full h-full m-auto flex justify-center items-center  p-2  bg-primary rounded-md shadow-xl lg:max-w-xl">
                     <div className="h-full w-full flex items-center justify-center">
                       <div className=" h-full w-full flex text-center flex-col space-y-5 items-center justify-center ">
                         <div className="text-3xl font-sans font-bold">
@@ -306,12 +348,12 @@ function Register() {
                         </div>
 
                         <div>
-                          <a
-                            href="./register"
+                          <Link
+                            to={"/login"}
                             className="bg-blue-600 text-white font-bold py-2 px-10 rounded-full"
                           >
-                            SIGN UP
-                          </a>
+                            SIGN IN
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -328,6 +370,45 @@ function Register() {
                         Sign Up
                       </h1>
                       <div className="mt-6">
+                        <div class="grid gap-4 grid-cols-2 mb-2">
+                          <div className="w-full">
+                            <label
+                              for="email"
+                              className="block text-sm font-semibold text-gray-800"
+                            >
+                              Họ
+                            </label>
+                            <input
+                              type="text"
+                              id="username"
+                              onChange={handleChange}
+                              name="first_name"
+                              // placeholder="first_name"
+                              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+
+                              // className="block w-full border-2 border-white border-b-indigo-500 px-4 py-2 mt-2 text-purple-700 bg-white  rounded "
+                            />
+                          </div>
+
+                          <div className="w-full">
+                            <label
+                              for="email"
+                              className="block text-sm font-semibold text-gray-800"
+                            >
+                              Tên
+                            </label>
+                            <input
+                              type="text"
+                              // id="username"
+                              onChange={handleChange}
+                              name="last_name"
+                              // placeholder="last_name"
+                              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+
+                              // className="block w-full border-2 border-white border-b-indigo-500 px-4 py-2 mt-2 text-purple-700 bg-white  rounded "
+                            />
+                          </div>
+                        </div>
                         <div className="mb-2">
                           <label
                             for="email"
@@ -340,7 +421,10 @@ function Register() {
                             id="username"
                             onChange={handleChange}
                             name="username"
+                            // placeholder="User Name"
                             className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+
+                            // className="block w-full border-2 border-white border-b-indigo-500 px-4 py-2 mt-2 text-purple-700 bg-white  rounded "
                           />
                         </div>
                         <div className="mb-2">

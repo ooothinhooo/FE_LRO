@@ -23,6 +23,8 @@ import {
   ViewBaiVietPage,
   ContentManagement,
   ProFile,
+  EditProfile,
+  SearchPage,
 } from "./page/";
 
 function App() {
@@ -47,10 +49,12 @@ function App() {
             <Route path="/*" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/search/:q" element={<SearchPage />} />
             {user && user?.userId ? (
               <>
                 <Route path="/me/drafts/" element={<ContentManagement />} />
                 <Route path="/u/:id" element={<ProFile />} />
+                <Route path="/u/edit/:id" element={<EditProfile />} />
                 //* BaiVietPage
                 <Route
                   path="/baiviet"
