@@ -23,8 +23,8 @@ function SearchPage() {
         <Header />
       </div>
       <div>
-        <div className="w-full h-screen bg-white flex justify-center items-center">
-          <div className="w-[90%] h-[99%] bg-pink-50 rounded-md">
+        <div className="w-full h-auto bg-white flex justify-center items-center">
+          <div className="w-[90%]  bg-pink-50 rounded-md">
             <div className="my-4 mx-2">
               <span className="lg:text-3xl md:text-2xl text-blue-800 font-extrabold ">
                 Kết Quả Tìm Kiếm Dành Cho Bạn

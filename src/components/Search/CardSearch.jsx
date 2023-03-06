@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function CardSearch({ data }) {
   return (
     <>
-      <>
+      <div className="h-auto">
         <>
           {data &&
             data.map((item, index) => {
@@ -69,7 +69,7 @@ function CardSearch({ data }) {
               );
             })}
         </>
-      </>
+      </div>
     </>
   );
 }

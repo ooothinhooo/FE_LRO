@@ -13,6 +13,7 @@ import {
   FUNC_DOC_LIST_FOR_USER,
   FUNC_SET_IS_PRIVATE_DOC,
 } from "../../service/FuncDoc/index.js";
+import { deleteCollection } from "../../func/delete.Cmt.js";
 function ManagementTL() {
   const { user } = useContext(ProductContext);
   const auth = user.token;
@@ -58,7 +59,9 @@ function ManagementTL() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        DeleteDocs(id);
+        deleteCollection("CMT/tailieu/", id);
+
+        // DeleteDocs(id);
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });

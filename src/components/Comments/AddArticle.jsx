@@ -66,7 +66,7 @@ export default function AddArticle({ colDB }) {
             description: formData.description,
             imageUrl: url,
             createdAt: Timestamp.now().toDate(),
-            createdBy: user.username,
+            createdBy: user.first_name + " " + user.last_name,
             userId: user.userId,
             likes: [],
             dislikes: [],
