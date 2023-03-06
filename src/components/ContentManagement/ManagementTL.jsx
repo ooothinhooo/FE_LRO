@@ -59,9 +59,9 @@ function ManagementTL() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteCollection("CMT/tailieu/", id);
+        // deleteCollection("CMT/tailieu/", id);
 
-        // DeleteDocs(id);
+        DeleteDocs(id);
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });
