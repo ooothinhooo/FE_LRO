@@ -58,13 +58,23 @@ function BoxViewTL({ data }) {
                               <AiFillLike /> {item?.like?.length}
                             </p>
                           </button>
-                          <Link to={`/tailieu/view/${item?._id}`}>
-                            <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
-                              <p class="text-primary flex text-md justify-center  items-center shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
-                                Xem Chi Tiết
-                              </p>
-                            </button>
-                          </Link>
+                          {item?.docs_URL ? (
+                            <Link to={`/tailieu/view/${item?._id}`}>
+                              <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
+                                <p class="text-primary flex text-md justify-center  items-center shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
+                                  Xem Chi Tiết
+                                </p>
+                              </button>
+                            </Link>
+                          ) : (
+                            <Link to={`/baiviet/view/${item?._id}`}>
+                              <button class="group shadow-lg shadow-cyan-300/50 relative overflow-hidden rounded bg-sky-400 bg-blue-300 hover:bg-green-400 hover:shadow-green-300/80 px-2 py-1 mx-1 font-sans uppercase  ring-sky-500 transition-all after:bg-sky-500 active:shadow-md active:ring-2">
+                                <p class="text-primary flex text-md justify-center  items-center shadow-lg shadow-blue-400/10 transition-all group-active:scale-90">
+                                  Xem Chi Tiết
+                                </p>
+                              </button>
+                            </Link>
+                          )}
                         </div>
                       </div>
                       <div className="p-1">

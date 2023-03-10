@@ -28,7 +28,7 @@ function Home() {
       </div>
 
       <div className=" w-full flex justify-center items-center bg-white">
-        <div className="w-[90%] py-5 px-4 bg-gray-100 flex justify-center items-center -mt-[50px] ">
+        <div className="w-[90%] py-5 px-4 bg-blue-100 flex justify-center items-center -mt-[50px] ">
           {/* <CardDoc /> */}
           <HighLightDoc />
         </div>

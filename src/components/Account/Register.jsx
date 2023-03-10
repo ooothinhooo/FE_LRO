@@ -15,6 +15,7 @@ import { authentication } from "../../firebase.js";
 import { login } from "../../service/Account/Login.js";
 import Swal from "sweetalert2";
 import removeVietnameseAndWhitespace from "../../func/remove.class.js";
+import { splitName } from "../../func/sliceName.js";
 function Register() {
   const navigation = useNavigate();
 
@@ -41,19 +42,19 @@ function Register() {
   const loginWithGoogle = async (e) => {
     const provider = new GoogleAuthProvider();
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    // const { refreshToken, providerData } = user;
-    // setForm2
     const username = removeVietnameseAndWhitespace(
       user?.displayName.toLocaleLowerCase()
     );
+    const { firstName, lastName } = splitName(user?.displayName);
+
     form2.form = "google";
     form2.uid = user?.uid;
     form2.username = username;
     form2.email = user?.email;
     form2.password = username;
     form2.avatar = user?.photoURL;
-    form2.first_name = user?.displayName.split(" ")[0];
-    form2.last_name = user?.displayName.split(" ").slice(1).join(" ");
+    form2.first_name = firstName;
+    form2.last_name = lastName;
     form2.isSex = 3;
     form2.phone = user?.uid;
 
@@ -66,6 +67,7 @@ function Register() {
     const username = removeVietnameseAndWhitespace(
       user?.displayName.toLocaleLowerCase()
     );
+    const { firstName, lastName } = splitName(user?.displayName);
 
     // const { refreshToken, providerData } = user;
     // setForm2
@@ -76,8 +78,8 @@ function Register() {
     form2.email = user?.email;
     form2.password = username;
     form2.avatar = user?.photoURL;
-    form2.first_name = user?.displayName.split(" ")[0];
-    form2.last_name = user?.displayName.split(" ").slice(1).join(" ");
+    form2.first_name = firstName;
+    form2.last_name = lastName;
     form2.isSex = 3;
     form2.phone = user?.uid;
     // console.table(form2);
