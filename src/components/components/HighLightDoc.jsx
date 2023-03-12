@@ -51,17 +51,11 @@ function HighLightDoc() {
   };
 
   const nextPage = () => {
-    console.log("NEXT PAGE = " + page);
-    const pg = page >= Math.ceil(DocsData.length / 12) ? page + 1 : 1;
-    setPage(pg);
-    // getPagination();
+    const maxPage = Math.ceil(DocsData.length / 12);
+    setPage(page + 1 > maxPage ? 1 : page + 1);
   };
   const prevPage = () => {
-    console.log("PREV PAGE = " + page);
-
-    const pg = page === 1 ? 1 : page - 1;
-    setPage(pg);
-    // getPagination();
+    setPage(page <= 1 ? 1 : page - 1);
   };
 
   useEffect(() => {
