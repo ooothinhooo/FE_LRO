@@ -13,6 +13,8 @@ import { CategoryArr } from "../../data/CategoryDoc.js";
 function CardDoc() {
   const { user } = useContext(ProductContext);
   const [page, setPage] = useState(Number(1));
+  const [category, setCategory] = useState("");
+
   const [DocsData, setDocsData] = useState([]);
   const [like, setLike] = useState({
     _id: "",
@@ -43,7 +45,7 @@ function CardDoc() {
 
   const getPagination = async () => {
     try {
-      const { data } = await FUNC_PAGE_DOCS(page);
+      const { data } = await FUNC_PAGE_DOCS(page, category);
       setDocsData(data);
     } catch (error) {}
   };
@@ -64,13 +66,13 @@ function CardDoc() {
 
   useEffect(() => {
     getPagination();
-  }, [page]);
+  }, [page, category]);
 
   const handlerView = async (id) => {};
 
   function renderCategory(value) {
     const category = CategoryArr.find((item) => item.value === value);
-    const categoryName = category ? category.name : "Không tìm thấy danh mục";
+    const categoryName = category ? category.name : "Tất cả Danh Mục";
     return categoryName;
   }
   // console.log(DocsData);
@@ -84,29 +86,66 @@ function CardDoc() {
                 <>
                   <div className="">
                     <div className=" w-full  flex justify-center items-center">
-                      <div className="w-[88%] py-5 px-4 bg-blue-100 flex justify-center items-center ">
-                        <div class="grid grid-cols-2 gap-6">
+                      <div className=" md:w-[92%] lg:w-[88%] py-5 px-4 bg-blue-100 justify-center items-center ">
+                        <div className="w-full  p-2 my-2 ">
+                          <div class="w-2/3 bg-white h-auto tracking-wide  border border-black-800 mx-1 rounded-lg relative">
+                            <h5 class="text-lg font-semibold p-2">
+                              Danh Mục Được Chọn
+                              <button
+                                class={`
+                              border-2 border-transparent bg-blue-500 p-2 mx-2 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
+                              >
+                                {renderCategory(category)}
+                              </button>
+                            </h5>
+                          </div>
+                          <div className="w-full   justify-center items-center  overflow-x-scroll">
+                            <div class="flex justify-center w-max mx-auto p-5 rounded border-2 border-gray-200">
+                              <button
+                                onClick={(e) => setCategory("")}
+                                class={` border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
+                              >
+                                Tất cả
+                              </button>
+                              {CategoryArr?.map((i) => {
+                                return (
+                                  <button
+                                    onClick={(e) => setCategory(i.value)}
+                                    class={`${
+                                      category == i.value
+                                        ? "bg-white text-blue-500"
+                                        : ""
+                                    } border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
+                                  >
+                                    {i.name}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="grid  gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
                           {DocsData &&
                             DocsData.map((item, index) => {
                               return (
                                 <div class="flex flex-col justify-center ">
-                                  <div class="min-h-[280px] relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
+                                  <div class="w-[360px] md:w-auto min-h-[280px] relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] p-3  md:max-w-3xl mx-auto border border-white bg-white">
                                     <p className="bg-green-100 w-auto h-8 flex text-md absolute -z-1 rounded-tl-lg rounded-br-full top-0 left-0">
                                       <span className="p-1">
                                         {renderCategory(item?.category)}
                                       </span>
                                     </p>
 
-                                    <div class="w-full md:w-1/3 bg-white grid place-items-center top-4 ">
+                                    <div class="w-full h-full md:w-1/3  bg-white md:grid md:place-items-center top-4 ">
                                       <iframe
-                                        class="w-full h-[70%] rounded cursor-grabbing overflow-hidden  shadow-lg box-decoration-clone"
+                                        class="w-full h-[70%] overflow-hidden overflow-y-hidden overflow-x-hidden rounded cursor-grabbing  shadow-lg box-decoration-clone"
                                         src={item?.docs_URL}
                                         title="W3Schools Free Online Web Tutorials"
                                         frameborder="0"
                                         scrolling="0"
                                       />
                                     </div>
-                                    <div class="w-full md:w-2/3 bg-white flex flex-col space-y-2 p-3">
+                                    <div class="w-full md:w-2/3  bg-white md:flex md:flex-col md:space-y-2 md:p-3">
                                       <div class="flex justify-between item-center">
                                         <p class="text-gray-500 font-medium hidden md:block">
                                           {item?.view} Lượt xem
@@ -437,7 +476,52 @@ function CardDoc() {
             </>
           ) : (
             <>
-              <Skenleton num={8} />
+              <div className="">
+                <div className=" w-full  flex justify-center items-center">
+                  <div className=" md:w-[92%] lg:w-[88%] py-5 px-4 bg-blue-100 justify-center items-center ">
+                    <div className="w-full  p-2 my-2 ">
+                      <div class="w-2/3 bg-white h-auto tracking-wide  border border-black-800 mx-1 rounded-lg relative">
+                        <h5 class="text-lg font-semibold p-2">
+                          Danh Mục Được Chọn
+                          <button
+                            class={`
+                              border-2 border-transparent bg-blue-500 p-2 mx-2 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
+                          >
+                            {renderCategory(category)}
+                          </button>
+                        </h5>
+                      </div>
+                      <div className="w-full   justify-center items-center  overflow-x-scroll">
+                        <div class="flex justify-center w-max mx-auto p-5 rounded border-2 border-gray-200">
+                          <button
+                            onClick={(e) => setCategory("")}
+                            class={` border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
+                          >
+                            Tất cả
+                          </button>
+                          {CategoryArr?.map((i) => {
+                            return (
+                              <button
+                                onClick={(e) => setCategory(i.value)}
+                                class={`${
+                                  category == i.value
+                                    ? "bg-white text-blue-500"
+                                    : ""
+                                } border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
+                              >
+                                {i.name}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid  gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
+                      <Skenleton num={12} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </div>

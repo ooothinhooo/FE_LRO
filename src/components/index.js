@@ -33,7 +33,7 @@ export { default as HighLightDoc } from "./components/HighLightDoc.jsx";
 
 //! ViewProFile
 export { default as BoxViewBV } from "./ViewProFile/BoxViewBV.jsx";
-export { default as BoxViewTL } from "./ViewProFile/BoxViewTL.jsx";
+export { default as BoxView } from "./ViewProFile/BoxView.jsx";
 
 //search
 

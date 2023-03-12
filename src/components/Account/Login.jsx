@@ -103,8 +103,8 @@ function Login() {
         // toast("Vui Lòng Chờ");
         localStorage.setItem("user", JSON.stringify(resultLogin.data.data));
         setTimeout(() => {
-          // window.location.href = "/";
-          navigation("/");
+          window.location.href = "/";
+          // navigation("/");
         }, 2000);
         return;
       }

@@ -65,11 +65,9 @@ function TaiLieuPage() {
       </div>
 
       <div className="w-full h-[200px]">
-        <div
-          className="flex justify-center flex-row items-center h-full"
-        >
-      {renderBanner()}
-      </div>
+        <div className="flex justify-center flex-row items-center h-full">
+          {renderBanner()}
+        </div>
       </div>
       <div
         className="w-full flex justify-center items-center bg-white
@@ -79,27 +77,6 @@ function TaiLieuPage() {
           <CardTL />
         </div>
       </div>
-      {/* <div class="md:grid md:grid-cols-3 md:gap-4 md:mx-2 md:my-4 my-4 h-auto">
-        <div class="col-span-2 h-auto">
-          <div className=" w-full flex justify-center items-center bg-white">
-            
-          </div>
-        </div>
-        <div class="md:block hidden mr-2 overflow-y-auto h-auto">
-          <div className="overflow-y-auto h-auto">
-            <div className="p-2">
-              <p className="text-2xl text-blue-400">BÀI VIẾT NỔI BẬT</p>
-            </div>
-            <CardRight data={data} type="baiviet" />
-          </div>
-          <div className="overflow-y-auto h-auto">
-            <div className="p-2">
-              <p className="text-2xl text-blue-400">CÁC TÁC GIẢ NỔI BẬT</p>
-            </div>
-            <CardAuthor data={dataUser} />
-          </div>
-        </div>
-      </div> */}
     </>
   );
 }

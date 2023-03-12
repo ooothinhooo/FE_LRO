@@ -122,7 +122,7 @@ function CardPost() {
                             onClick={(e) => {
                               handlerLike(item?._id);
                             }}
-                            class="flex  text-gray-700 text-sm  z-50  cursor-pointer"
+                            class="flex  text-gray-700 text-sm  z-2  cursor-pointer"
                           >
                             <span className="text-xl">{item?.like.length}</span>
                             <span className="mx-1">

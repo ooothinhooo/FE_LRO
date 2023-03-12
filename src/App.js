@@ -26,6 +26,7 @@ import {
   EditProfile,
   SearchPage,
 } from "./page/";
+import ChangePassPage from "./page/ChangePassPage.jsx";
 
 function App() {
   const { user } = useContext(ProductContext);
@@ -34,15 +35,6 @@ function App() {
 
   return (
     <>
-      {/* <div className="container">
-        <DocsForm />
-        <div className="songs_container">
-          {songs.map((song) => (
-            <Docs song={song} key={song._id} />
-          ))}
-        </div>
-      </div> */}
-      {/* <Login /> */}
       <StrictMode>
         <BrowserRouter>
           <Routes>
@@ -55,6 +47,7 @@ function App() {
                 <Route path="/me/drafts/" element={<ContentManagement />} />
                 <Route path="/u/:id" element={<ProFile />} />
                 <Route path="/u/edit/:id" element={<EditProfile />} />
+                <Route path="/u/edit/pass/:id" element={<ChangePassPage />} />
                 //* BaiVietPage
                 <Route
                   path="/baiviet"
