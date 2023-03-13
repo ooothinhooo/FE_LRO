@@ -3,14 +3,12 @@ import { useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
-
+import { add_doc } from "../../service/TaiLieu/AddDoc.js";
 import { FileInput } from "../../components";
-
+import dataCourse from "../../data/course.js";
 import { TagsInput } from "react-tag-input-component";
 import { FUNC_CREATE_DOC } from "../../service/FuncDoc/index.js";
 import Swal from "sweetalert2";
-import { CategoryArr } from "../../data/CategoryDoc.js";
-
 function DocForm() {
   const { user } = useContext(ProductContext);
   const token = user?.token;
@@ -41,99 +39,57 @@ function DocForm() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      data.title != "" &&
-      data.category != "" &&
-      data.content != "" &&
-      data.docs_URL != "" &&
-      checkForm()
-    ) {
-      const resultLogin = await FUNC_CREATE_DOC(token, data);
-      console.log(resultLogin);
-      if (resultLogin.status == 200) {
-        if (resultLogin.data.status === 200) {
-          toast(resultLogin.data.message);
-          setData({
-            title: "",
-            tag: "",
-            category: "",
-            content: "",
-            docs_URL: "",
-            creatorsName: user.first_name + " " + user.last_name,
-            creatorsId: user.userId,
-            creatorsPhoto: user.avatar,
-            isPrivate: "",
-          });
-          setUpload(!upload);
+    const resultLogin = await FUNC_CREATE_DOC(token, data);
+    console.log(resultLogin);
+    if (resultLogin.status == 200) {
+      if (resultLogin.data.status === 200) {
+        toast(resultLogin.data.message);
+        setData({
+          title: "",
+          tag: "",
+          category: "",
+          content: "",
+          docs_URL: "",
+          creatorsName: user.first_name + user.last_name,
+          creatorsId: user.userId,
+          creatorsPhoto: user.avatar,
+          isPrivate: "",
+        });
+        setUpload(!upload);
 
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Đăng Tải Tài Liệu Thành Công",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setTimeout(() => {
-            window.location = "/tailieu";
-          }, 1000);
-          return;
-        }
-        if (resultLogin.data.status === 201) {
-          toast(resultLogin.data.data);
-          return;
-        }
-        if (resultLogin.data.status === 202) {
-          toast(resultLogin.data.message);
-          return;
-        }
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Đăng Tải Tài Liệu Thành Công",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setTimeout(() => {
+          window.location = "/tailieu";
+        }, 1000);
+        return;
       }
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Vui Lòng Điền Đủ Thông Tin",
-        text: ``,
-      });
+      if (resultLogin.data.status === 201) {
+        toast(resultLogin.data.data);
+        return;
+      }
+      if (resultLogin.data.status === 202) {
+        toast(resultLogin.data.message);
+        return;
+      }
     }
   };
-
-  function checkForm() {
-    console.log(data.tag.length);
-    if (selected.length > 0 && selected.length < 6) {
-      if (selected.length > 2) {
-        return true;
-      }
-      return false;
-    } else return false;
-  }
-
   useEffect(() => {
     data.isPrivate = isP;
     data.tag = selected;
     console.table(data);
     console.log(upload);
-
-    console.log(checkForm());
   }, [data, isP, selected]);
   useEffect(() => {
     if (data.docs_URL?.size == undefined) {
       setUpload(!upload);
     }
   }, [data.docs_URL]);
-  function back() {
-    data.docs_URL = "";
-    setUpload(!upload);
-    setData({
-      title: "",
-      tag: "",
-      category: "",
-      content: "",
-      docs_URL: "",
-      creatorsName: user.first_name + user.last_name,
-      creatorsId: user.userId,
-      creatorsPhoto: user.avatar,
-      isPrivate: "",
-    });
-  }
   return (
     <div>
       <ToastContainer />
@@ -238,9 +194,10 @@ function DocForm() {
                       className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     >
                       <option selected>Chọn một danh mục</option>
-                      {CategoryArr.map((i) => {
-                        return <option value={i.value}>{i.name}</option>;
-                      })}
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                      <option value="FR">France</option>
+                      <option value="DE">Germany</option>
                     </select>
                   </div>
                 </div>
@@ -308,10 +265,11 @@ function DocForm() {
                 </div>
                 <div className="w-full flex justify-between gap-4">
                   <div className="flex gap-4">
-                    <div onClick={(e) => back} class="flex">
+                    <div onClick={(e) => setUpload(false)} class="flex">
+                      <input type="button" id="choose-me" class="peer hidden" />
                       <label
                         for="choose-me"
-                        class="hover:bg-green-400 select-none cursor-pointer rounded-lg border-2 border-gray-200
+                        class="select-none cursor-pointer rounded-lg border-2 border-gray-200
    py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200 "
                       >
                         Quay Lại
