@@ -111,7 +111,6 @@ function DocForm() {
     data.tag = selected;
     // console.table(data);
     // console.log(upload);
-
     // console.log(checkForm());
   }, [data, isP, selected]);
   useEffect(() => {
