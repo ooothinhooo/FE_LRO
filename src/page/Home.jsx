@@ -1,7 +1,6 @@
 import { arrayRemove } from "firebase/firestore";
 import React, { useRef, useEffect } from "react";
-import CardDoc from "../components/components/CardDoc.jsx";
-import CardPost from "../components/components/CardPost.jsx";
+
 import { Footer, Header, HighLightDoc, Login } from "../components/index.js";
 
 function Home() {
@@ -28,7 +27,7 @@ function Home() {
       </div>
 
       <div className=" w-full flex justify-center items-center bg-white">
-        <div className="w-[90%] py-5 px-4 bg-gray-100 flex justify-center items-center -mt-[50px] ">
+        <div className="w-[90%] py-5 px-4 bg-blue-100 flex justify-center items-center -mt-[50px] ">
           {/* <CardDoc /> */}
           <HighLightDoc />
         </div>

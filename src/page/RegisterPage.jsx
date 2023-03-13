@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Register } from "../components/index.js";
+import { Header, Register, SignUp } from "../components/index.js";
 
 function RegisterPage() {
   return (
@@ -8,7 +8,8 @@ function RegisterPage() {
         <Header />
       </div>
       <div>
-        <Register />
+        {/* <Register /> */}
+        <SignUp />
       </div>
     </>
   );

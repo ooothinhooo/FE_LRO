@@ -20,8 +20,8 @@ function FormBV() {
 
   let { id } = useParams();
   const [dataArr, setDataArr] = useState([]);
-  const [value, setValue] = React.useState("");
-  const [otitle, setoTitle] = React.useState("");
+  const [value, setValue] = React.useState();
+  const [otitle, setoTitle] = React.useState();
   const [selected, setSelected] = useState([]);
   const [isP, setisP] = useState(false);
 
@@ -40,10 +40,11 @@ function FormBV() {
       const result = await FUNC_FIND_ONE_ART(id);
       setDataArr(result.data.data);
       var re = result.data.data;
-      // console.log(result);
+      // console.log(re);
       setoTitle(re.title);
       setSelected(re.tag);
-      setValue(re.desc);
+      setValue(re.content);
+      console.log(value);
       setisP(Boolean(re.isPrivate));
       setForm({
         title: otitle,

@@ -106,26 +106,52 @@ function ViewBaiVietPage() {
                 </nav>
               </div>
             </div>
-            <div className="w-[98%] flex  my-2 mx-2 ">
-              <div className="w-full">
-                <div className="flex w-full justify-start items-center  border-t border-b border-green-300 text-green-200 ">
-                  <div className="w-full bg-primary p-2 h-full flex justify-between ">
-                    <div className=" flex justify-center items-end ">
-                      <img
-                        className="h-14 w-14 rounded-full"
-                        src={data?.creatorsPhoto}
-                      />
-                      <label className="block">
-                        <h1 className="text-md">{data?.creatorsName}</h1>
-                        <h1>{data?.date}</h1>
-                      </label>
-                    </div>
-                    <div>
-                      <h1>{data?.like.length} Lượt Thích</h1>
-                      <h1>{data?.view} Lượt xem</h1>
-                    </div>
+            <div className="flex justify-start items-end my-1">
+              <img className="h-8 w-8 rounded-full" src={data?.creatorsPhoto} />
+              <Link
+                class="text-black  hover:text-blue-400 mx-2 font-thin"
+                to={`/u/${data?.creatorsId}`}
+              >
+                <h1 className="text-md">{data?.creatorsName}</h1>
+              </Link>
+            </div>
+            <div class="p-4 rounded border border-gray-700 bg-gray-50 h-auto ">
+              <div class="flex justify-between items-center">
+                <div className="flex">
+                  <a class="text-black font-bold hover:text-blue-400" href="#">
+                    {data?.title}
+                  </a>
+                </div>
+                <div className="flex gap-2">
+                  <div class="flex">
+                    <button class="hover:border-white text-black bg-white p-1 border border-gray-600 rounded-l hover:border-b hover:border-blue-400-lg">
+                      ⭐{data?.view}
+                    </button>
+                    <button class="hover:border-white text-black bg-white p-1 border border-gray-600 rounded-r-lg">
+                      Lượt xem
+                    </button>
+                  </div>
+                  <div class="flex">
+                    <button class="hover:border-white text-black bg-white p-1 border border-gray-600 rounded-l hover:border-b hover:border-blue-400-lg">
+                      ⭐{data?.like.length}
+                    </button>
+                    <button class="hover:border-white text-black bg-white p-1 border border-gray-600 rounded-r-lg">
+                      Lượt thích
+                    </button>
                   </div>
                 </div>
+              </div>
+              {/* <p class="text-sm text-gray-400">{data?.content}</p> */}
+              <div class="mt-3 flex items-center gap-5">
+                {/* <p class="text-sm text-gray-400">🔴 C++</p> */}
+                {data?.tag.map((i) => {
+                  return (
+                    <a href="#" class="text-sm text-gray-400">
+                      ⭐ {i}
+                    </a>
+                  );
+                })}
+                <p class="text-sm text-gray-400">Update {data?.date}</p>
               </div>
             </div>
             {/* Button hiện thị bình luận */}
@@ -172,18 +198,6 @@ function ViewBaiVietPage() {
           </div>
           <div className="w-full flex justify-center items-center">
             <div className="w-full bg-gray-100 p-1 justify-center items-center rounded-sm shadow-lg shadow-green-400/30">
-              <div className="p-2">
-                <h1 className="text-blue-900">{data?.title}</h1>
-                <p>
-                  {data?.tag.map((i) => {
-                    return (
-                      <span className="p-1 bg-blue-gray-100 rounded-md mx-1">
-                        {i}
-                      </span>
-                    );
-                  })}
-                </p>
-              </div>
               <div data-color-mode="light" className="">
                 <MDEditor.Markdown
                   style={{ padding: 15 }}

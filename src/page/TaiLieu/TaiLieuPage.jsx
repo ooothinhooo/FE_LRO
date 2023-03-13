@@ -15,6 +15,7 @@ import {
 } from "../../components/index.js";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
 import { CNTT, Kte, Sinhhoc, Yte } from "../../images/index.js";
+import Banner from "../../components/components/Banner.jsx";
 
 function TaiLieuPage() {
   const { user } = useContext(ProductContext);
@@ -24,39 +25,40 @@ function TaiLieuPage() {
   const [data, setData] = useState([]);
   const [dataUser, setDataUser] = useState([]);
 
-
   const slideImages = [
     {
       url: CNTT,
-      caption: 'Slide 1'
+      caption: "Slide 1",
     },
     {
       url: Yte,
-      caption: 'Slide 2'
+      caption: "Slide 2",
     },
     {
       url: Sinhhoc,
-      caption: 'Slide 3'
+      caption: "Slide 3",
     },
   ];
   const randomizedArray = slideImages.sort(() => Math.random() - 0.5);
 
   console.log(randomizedArray); // [6, 2, 5, 3, 1, 4]
-  function renderBanner(){
-    return(
+  function renderBanner() {
+    return (
       <>
-      <div className="w-full h-full">
-        <img className="w-full h-full" src={ randomizedArray[0].url} />
-      </div>
+        <div className="w-full h-full flex justify-center items-center">
+          <div className="w-full h-full justify-center items-center">
+            <img className="w-full h-full z-1" src={randomizedArray[0].url} />
+          </div>
+        </div>
       </>
-    )
+    );
   }
 
   useEffect(() => {
     setTimeout(() => {
-      console.log("1")
-    }, 500 );
-  })
+      console.log("1");
+    }, 500);
+  });
 
   return (
     <>
@@ -64,12 +66,12 @@ function TaiLieuPage() {
         <Header />
       </div>
 
-      <div className="w-full h-[200px]">
-        <div
-          className="flex justify-center flex-row items-center h-full"
-        >
-      {renderBanner()}
-      </div>
+      <div className="w-full h-[250px]">
+        <div className="flex justify-center flex-row items-center h-full">
+          {/* {renderBanner()}
+           */}
+          <Banner Images={slideImages} />
+        </div>
       </div>
       <div
         className="w-full flex justify-center items-center bg-white
@@ -79,27 +81,6 @@ function TaiLieuPage() {
           <CardTL />
         </div>
       </div>
-      {/* <div class="md:grid md:grid-cols-3 md:gap-4 md:mx-2 md:my-4 my-4 h-auto">
-        <div class="col-span-2 h-auto">
-          <div className=" w-full flex justify-center items-center bg-white">
-            
-          </div>
-        </div>
-        <div class="md:block hidden mr-2 overflow-y-auto h-auto">
-          <div className="overflow-y-auto h-auto">
-            <div className="p-2">
-              <p className="text-2xl text-blue-400">BÀI VIẾT NỔI BẬT</p>
-            </div>
-            <CardRight data={data} type="baiviet" />
-          </div>
-          <div className="overflow-y-auto h-auto">
-            <div className="p-2">
-              <p className="text-2xl text-blue-400">CÁC TÁC GIẢ NỔI BẬT</p>
-            </div>
-            <CardAuthor data={dataUser} />
-          </div>
-        </div>
-      </div> */}
     </>
   );
 }

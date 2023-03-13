@@ -15,11 +15,11 @@ import {
   VIEW_DOC,
 } from "../Docs.api.js";
 
-export const FUNC_PAGE_DOCS = async (page) => {
+export const FUNC_PAGE_DOCS = async (page, cate) => {
   return axios({
     method: "get",
     url: PAGE_DOCS,
-    params: { page: page },
+    params: { page: page, cate: cate },
   });
 };
 
