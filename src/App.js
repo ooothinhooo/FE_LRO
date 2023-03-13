@@ -6,9 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import LazyLoad from "react-lazyload";
 import { ProductContext } from "./contexts/ProductContextProvider.jsx";
-import DocsForm from "../src/components/Test/DocForm/index.jsx";
-import Docs from "../src/components/Test/Docs/index.jsx";
-import { GET_ALL_DOC } from "./service/apiConstant.js";
+
 import {
   Home,
   BaiVietPage,
@@ -40,8 +38,21 @@ function App() {
           <Routes>
             <Route path="/*" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
+            {/* <Route path="/register" element={<SignUp />} /> */}
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/search/:q" element={<SearchPage />} />
+            <Route path="/baiviet" element={<BaiVietPage />} />
+            <Route
+              path="/tailieu"
+              element={
+                <LazyLoad
+                  placeholder={"Loading..."}
+                  fallback={<div>Loading...</div>}
+                >
+                  <TaiLieuPage />
+                </LazyLoad>
+              }
+            />
             {user && user?.userId ? (
               <>
                 <Route path="/me/drafts/" element={<ContentManagement />} />
@@ -49,17 +60,6 @@ function App() {
                 <Route path="/u/edit/:id" element={<EditProfile />} />
                 <Route path="/u/edit/pass/:id" element={<ChangePassPage />} />
                 //* BaiVietPage
-                <Route
-                  path="/baiviet"
-                  element={
-                    <LazyLoad
-                      placeholder={"Loading..."}
-                      fallback={<div>Loading...</div>}
-                    >
-                      <BaiVietPage />
-                    </LazyLoad>
-                  }
-                />
                 <Route path="/baiviet/create" element={<CreateBaiVietPage />} />
                 <Route
                   path="/baiviet/update/:id"
@@ -67,7 +67,6 @@ function App() {
                 />
                 <Route path="/baiviet/view/:id" element={<ViewBaiVietPage />} />
                 //* TaiLieu
-                <Route path="/tailieu" element={<TaiLieuPage />} />
                 <Route path="/tailieu/create" element={<CreateTaiLieuPage />} />
                 <Route path="/tailieu/view/:id" element={<ViewTaiLieuPage />} />
               </>

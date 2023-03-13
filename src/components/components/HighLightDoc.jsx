@@ -80,7 +80,7 @@ function HighLightDoc() {
                 <>
                   <div className="">
                     <div className=" w-full  flex justify-center items-center">
-                      <div className="w-[88%] py-5 px-4  flex justify-center items-center ">
+                      <div className="w-full py-5 px-4  flex justify-center items-center ">
                         <div class="grid grid-cols-2 gap-6">
                           {DocsData &&
                             DocsData.map((item, index) => {

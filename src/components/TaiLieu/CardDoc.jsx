@@ -1,19 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import { ProductContext } from "../../contexts/ProductContextProvider.jsx";
 import { FiEye } from "react-icons/fi";
-import { BsFillHeartFill } from "react-icons/bs";
+import { AiFillHeart } from "react-icons/ai";
 import { FaDownload, FaRegCommentDots } from "react-icons/fa";
 import {
   FUNC_INTERACT_DOC,
   FUNC_PAGE_DOCS,
 } from "../../service/FuncDoc/index.js";
-import Skenleton from "./Skenleton.jsx";
+import Skenleton from "../components/Skenleton.jsx";
 import { Link } from "react-router-dom";
 import { CategoryArr } from "../../data/CategoryDoc.js";
-function CardDoc() {
+function CardDoc({ category, layout }) {
   const { user } = useContext(ProductContext);
   const [page, setPage] = useState(Number(1));
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
 
   const [DocsData, setDocsData] = useState([]);
   const [like, setLike] = useState({
@@ -73,51 +73,14 @@ function CardDoc() {
   return (
     <>
       <div className="w-full  justify-center items-center ">
-        <div class=" my-1 p-4">
+        <div class={layout ? "hidden" : ""}>
           {DocsData && DocsData != "" ? (
             <>
               <>
                 <>
                   <div className="">
                     <div className=" w-full  flex justify-center items-center">
-                      <div className=" md:w-[92%] lg:w-[88%] py-5 px-4 bg-blue-100 justify-center items-center ">
-                        <div className="w-full  p-2 my-2 ">
-                          <div class="w-2/3 bg-white h-auto tracking-wide  border border-black-800 mx-1 rounded-lg relative">
-                            <h5 class="text-lg font-semibold p-2">
-                              Danh Mục Được Chọn
-                              <button
-                                class={`
-                              border-2 border-transparent bg-blue-500 p-2 mx-2 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
-                              >
-                                {renderCategory(category)}
-                              </button>
-                            </h5>
-                          </div>
-                          <div className="w-full   justify-center items-center  overflow-x-scroll">
-                            <div class="flex justify-center w-max mx-auto p-5 rounded border-2 border-gray-200">
-                              <button
-                                onClick={(e) => setCategory("")}
-                                class={` border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
-                              >
-                                Tất cả
-                              </button>
-                              {CategoryArr?.map((i) => {
-                                return (
-                                  <button
-                                    onClick={(e) => setCategory(i.value)}
-                                    class={`${
-                                      category == i.value
-                                        ? "bg-white text-blue-500"
-                                        : ""
-                                    } border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
-                                  >
-                                    {i.name}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
+                      <div className=" md:w-full lg:w-[96%] py-5 px-8 bg-blue-100 justify-center items-center ">
                         <div class="grid  gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
                           {DocsData &&
                             DocsData.map((item, index) => {
@@ -419,8 +382,8 @@ function CardDoc() {
                   </div>
                 </>
 
+                {/* <!-- Previous Button --> */}
                 <div className="my-3 w-full   flex justify-center items-center ">
-                  {/* <!-- Previous Button --> */}
                   <div className="w-[95%] flex justify-between items-center">
                     <a
                       onClick={(e) => prevPage()}
@@ -472,44 +435,7 @@ function CardDoc() {
             <>
               <div className="">
                 <div className=" w-full  flex justify-center items-center">
-                  <div className=" md:w-[92%] lg:w-[88%] py-5 px-4 bg-blue-100 justify-center items-center ">
-                    <div className="w-full  p-2 my-2 ">
-                      <div class="w-2/3 bg-white h-auto tracking-wide  border border-black-800 mx-1 rounded-lg relative">
-                        <h5 class="text-lg font-semibold p-2">
-                          Danh Mục Được Chọn
-                          <button
-                            class={`
-                              border-2 border-transparent bg-blue-500 p-2 mx-2 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
-                          >
-                            {renderCategory(category)}
-                          </button>
-                        </h5>
-                      </div>
-                      <div className="w-full   justify-center items-center  overflow-x-scroll">
-                        <div class="flex justify-center w-max mx-auto p-5 rounded border-2 border-gray-200">
-                          <button
-                            onClick={(e) => setCategory("")}
-                            class={` border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
-                          >
-                            Tất cả
-                          </button>
-                          {CategoryArr?.map((i) => {
-                            return (
-                              <button
-                                onClick={(e) => setCategory(i.value)}
-                                class={`${
-                                  category == i.value
-                                    ? "bg-white text-blue-500"
-                                    : ""
-                                } border-2 border-transparent bg-blue-500 ml-3 py-2 px-4 font-bold uppercase text-white rounded transition-all hover:border-blue-500 hover:bg-transparent hover:text-blue-500`}
-                              >
-                                {i.name}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
+                  <div className=" md:w-full lg:w-[96%] py-5 px-4 bg-blue-100 justify-center items-center ">
                     <div class="grid  gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
                       <Skenleton num={12} />
                     </div>
@@ -518,6 +444,178 @@ function CardDoc() {
               </div>
             </>
           )}
+        </div>
+        <div className={!layout ? "hidden" : ""}>
+          {DocsData && DocsData != "" ? (
+            <>
+              {
+                <div className="">
+                  <div className=" w-full  flex justify-center items-center">
+                    <div className=" md:w-full lg:w-[96%] py-5 px-8 bg-blue-100 justify-center items-center ">
+                      <div class="grid  gap-4 lg:grid lg:grid-cols-4 lg:gap-6">
+                        {DocsData?.map((item, index) => {
+                          return (
+                            <>
+                              <div class="!z-5 relative flex flex-col rounded-[20px] max-w-[300px] bg-white bg-clip-border shadow-3xl shadow-shadow-500 flex flex-col w-full !p-4 3xl:p-![18px] bg-white undefined">
+                                <div class="h-full w-full">
+                                  <div class="relative w-full">
+                                    <iframe
+                                      src={item?.docs_URL}
+                                      // src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
+                                      class="mb-3 h-full w-full rounded-xl 3xl:h-full 3xl:w-full"
+                                      alt=""
+                                    />
+                                    <button
+                                      onClick={(e) => {
+                                        handlerLike(item?._id);
+                                      }}
+                                      class="absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 text-brand-500 hover:cursor-pointer"
+                                    >
+                                      <div class="flex h-full w-full items-center justify-center rounded-full text-xl hover:bg-gray-50">
+                                        {!item?.like?.includes(photoURL) ? (
+                                          <>
+                                            <svg
+                                              stroke="currentColor"
+                                              fill="currentColor"
+                                              stroke-width="0"
+                                              viewBox="0 0 512 512"
+                                              height="1em"
+                                              width="1em"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              className="text-ređ"
+                                            >
+                                              <path
+                                                fill="none"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="32"
+                                                d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"
+                                              ></path>
+                                            </svg>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <AiFillHeart className="text-red-500" />
+                                          </>
+                                        )}
+                                      </div>
+                                    </button>
+                                  </div>
+                                  <div class="mb-3 flex items-center justify-between px-1 md:items-start">
+                                    <div class="mb-2">
+                                      <p class="text-lg font-bold text-navy-700 hover:text-blue-400">
+                                        <Link to={`/tailieu/view/${item?._id}`}>
+                                          {item?.title.substring(0, 35) + "..."}
+                                        </Link>
+                                      </p>
+                                      <p class="mt-1 text-sm font-medium text-gray-600 md:mt-2 hover:text-blue-400">
+                                        <Link to={`/u/${item?.creatorsId}`}>
+                                          By {item?.creatorsName}
+                                        </Link>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div class="flex items-center justify-between md:items-center lg:justify-between ">
+                                    <div class="flex">
+                                      {/* <p class="!mb-0 text-sm font-bold text-brand-500">
+                                        Current Bid: 0.91 <span>ETH</span>
+                                      </p> */}
+                                      <div class="flex flex-row-reverse md:mt-2 lg:mt-0">
+                                        <span class="z-0 ml-px inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#E0E5F2] text-xs text-navy-700 ">
+                                          +{item?.like?.length}
+                                        </span>
+                                        {item?.like?.slice(0, 5)?.map((i) => {
+                                          return (
+                                            <span class="z-10 -mr-3 h-8 w-8 rounded-full border-2 border-white">
+                                              <img
+                                                class="h-full w-full rounded-full object-cover"
+                                                // src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/avatar1.eeef2af6dfcd3ff23cb8.png"
+                                                alt=""
+                                                src={i}
+                                              />
+                                            </span>
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                    <div className="absolute flex justify-center p-2 rounded-md items-center  h-5 bg-green-100 bottom-0 right-0">
+                                      <span className="text-sm">
+                                        {renderCategory(item?.category)}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </>
+          ) : (
+            <>
+              <div className="">
+                <div className=" w-full  flex justify-center items-center">
+                  <div className=" md:w-full lg:w-[96%] py-5 px-4 bg-blue-100 justify-center items-center ">
+                    <div class="grid  gap-4 lg:grid lg:grid-cols-4 lg:gap-6">
+                      <Skenleton num={12} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* <!-- Previous Button --> */}
+          <div className="my-3 w-full   flex justify-center items-center ">
+            <div className="w-[95%] flex justify-between items-center">
+              <a
+                onClick={(e) => prevPage()}
+                class="cursor-pointer inline-flex justify-start items-center 
+              px-4 py-2 mr-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-green-300 hover:text-green-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Previous
+              </a>
+              <a
+                onClick={(e) => {
+                  nextPage();
+                }}
+                class="cursor-pointer inline-flex justify-end items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg
+               hover:bg-green-300 hover:text-green-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                Next
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5 ml-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </>

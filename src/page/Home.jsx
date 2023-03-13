@@ -1,7 +1,6 @@
 import { arrayRemove } from "firebase/firestore";
 import React, { useRef, useEffect } from "react";
-import CardDoc from "../components/components/CardDoc.jsx";
-import CardPost from "../components/components/CardPost.jsx";
+
 import { Footer, Header, HighLightDoc, Login } from "../components/index.js";
 
 function Home() {

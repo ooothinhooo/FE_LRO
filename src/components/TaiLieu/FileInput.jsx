@@ -15,11 +15,11 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
   // console.log(uid);
   const inputRef = useRef();
   const [progress, setProgress] = useState(0);
-  const [progressShow, setProgressShow] = useState(false);
+  const [progressShow, setProgressShow] = useState(Boolean(true));
   const [checkFile, setCheckFile] = useState(false);
   const handleUpload = () => {
     console.log(value);
-    setProgressShow(true);
+    setProgressShow(false);
     const fileName = new Date().getTime() + value.name;
     const storageRef = ref(
       storage,
@@ -27,6 +27,7 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
     );
     const uploadTask = uploadBytesResumable(storageRef, value);
     if (value?.type == "application/pdf") {
+      // setProgressShow(true);
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -34,6 +35,7 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
           setProgress(uploaded);
+          // console.log(uploaded);
         },
         (error) => {
           console.log(error);
@@ -44,14 +46,14 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
           });
         }
       );
-      setProgressShow(false);
+      setProgressShow(true);
     } else {
       Swal.fire({
         icon: "error",
         title: "Vui Lòng Chọn File PDF",
         text: "Something went wrong!",
       });
-      setProgressShow(false);
+      setProgressShow(true);
       value = "";
     }
   };
@@ -70,64 +72,64 @@ const FileInput = ({ name, label, value, type, handleInputState, ...rest }) => {
     }
   }
 
+  // console.log(value);
   return (
-    <div className={`flex w-full h-full `}>
-      <button
-        type="button"
-        onClick={() => inputRef.current.click()}
-        className={`hidden text-white bg-gradient-to-br from-green-400 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
-      >
-        {label}
-      </button>
-      <div
-        className={` text-gray-200 border-sky-500  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
-      >
-        <input
-          type="file"
-          name="upload"
-          // accept="application/pdf,application/vnd.ms-excel"
-          accept=".jpg,.png,application/pdf"
-          ref={inputRef}
-          onChange={(e) => handleInputState(name, e.currentTarget.files[0])}
-          vlaue={value}
-          // className={`bg-red-400`}
-          className={`text-black hidden border-sky-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
-          {...rest}
-        />
-      </div>
-
-      {/* {type === "docs" && value && (
-        // <audio
-        //   src={typeof value === "string" ? value : URL.createObjectURL(value)}
-        //   controls
-        // />
-      )} */}
-      {value !== null &&
-      // checkFile &&
-      !progressShow &&
-      typeof value !== "string" ? (
+    <>
+      <div className={`flex w-full h-full justify-center items-center `}>
         <button
-          onClick={handleUpload}
-          className={`text-white w-full bg-gradient-to-br from-green-400 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+          type="button"
+          onClick={() => inputRef.current.click()}
+          className={`hidden text-white bg-gradient-to-br from-green-400 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
         >
-          Upload
+          {label}
         </button>
-      ) : (
-        <></>
-      )}
-      {progressShow && progress < 100 && (
         <div
-          className={`container border-none bg-blue-300 rounded-full text-red-500`}
+          className={` text-gray-200 border-sky-500  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
         >
-          <p>{progress}%</p>
+          <input
+            type="file"
+            name="upload"
+            // accept="application/pdf,application/vnd.ms-excel"
+            accept=".jpg,.png,application/pdf"
+            ref={inputRef}
+            onChange={(e) => handleInputState(name, e.currentTarget.files[0])}
+            vlaue={value}
+            // className={`bg-red-400`}
+            className={`text-black hidden border-sky-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+            {...rest}
+          />
         </div>
-      )}
-      {progress === 100 && (
-        <div className={`flex w-16 h-16 justify-end items-end`}>
-          <img src={check} alt="check circle" />
-        </div>
-      )}
-    </div>
+
+        {/* {type === "docs" && value && (
+  // <audio
+  //   src={typeof value === "string" ? value : URL.createObjectURL(value)}
+  //   controls
+  // />
+)} */}
+        {value != "" && progressShow && progress < 1 ? (
+          <button
+            onClick={handleUpload}
+            className={`w-auto text-white bg-gradient-to-br from-green-400 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+          >
+            Upload
+          </button>
+        ) : (
+          <></>
+        )}
+        {progressShow && progress > 1 && (
+          <div
+            className={`container h-5 flex items-center justify-center border-none bg-blue-300 rounded-full text-red-500`}
+          >
+            <p>{progress}%</p>
+          </div>
+        )}
+        {progress === 100 && (
+          <div className={`flex w-16 h-16 justify-end items-end`}>
+            <img src={check} alt="check circle" />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

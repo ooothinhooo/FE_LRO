@@ -65,21 +65,14 @@ function ChangePass() {
   }, [isPass, isConfirmPass]);
   return (
     <>
-      <div>
+      <div className="z-1">
         <div
-          className={`w-full bg-white/90  relative z-50 flex justify-center items-center `}
+          className={`w-full  bg-white/90  relative  flex justify-center items-center `}
         >
           <div className="w-[90%] h-[60%] ">
             <section class=" dark:bg-gray-900">
               <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <div class="w-full p-6 bg-white rounded-lg shadow dark:border  sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
-                  <button
-                    type="submit"
-                    // onClick={(e) => setBack(!back)}
-                    class="w-fix  text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-xl  text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    <GiFastBackwardButton />
-                  </button>
                   <h2 class="mb-1 w-full text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     THAY ĐỔI MẬT KHẨU
                   </h2>
